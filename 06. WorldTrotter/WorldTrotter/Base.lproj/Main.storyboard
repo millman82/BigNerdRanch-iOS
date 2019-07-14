@@ -94,16 +94,22 @@
         <!--Map-->
         <scene sceneID="Bx8-LU-8ge">
             <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ncy-nS-Fcl" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="bOi-g9-ble" customClass="MapViewController" customModule="WorldTrotter" customModuleProvider="target" sceneMemberID="viewController">
-                    <mapView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="vsB-uA-WWC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </mapView>
                     <tabBarItem key="tabBarItem" title="Map" image="MapIcon" id="FCF-Ww-bc0"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ncy-nS-Fcl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2068" y="431"/>
+            <point key="canvasLocation" x="2937" y="191"/>
+        </scene>
+        <!--Book Vacation-->
+        <scene sceneID="WT6-C4-cce">
+            <objects>
+                <viewController id="2vs-wJ-DPs" customClass="WebViewController" customModule="WorldTrotter" customModuleProvider="target" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Book Vacation" image="AirportIcon" id="bX6-je-bA1"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bJD-PW-IDp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2068" y="690"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Ok1-5C-u3z">
@@ -111,20 +117,23 @@
                 <tabBarController automaticallyAdjustsScrollViewInsets="NO" id="wZo-0B-QLz" sceneMemberID="viewController">
                     <toolbarItems/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="hsQ-QW-ddg">
+                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="SW2-Gn-CIh"/>
                         <segue destination="bOi-g9-ble" kind="relationship" relationship="viewControllers" id="doX-fO-DD3"/>
+                        <segue destination="2vs-wJ-DPs" kind="relationship" relationship="viewControllers" id="8ec-1b-8aD"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MXg-yD-vqK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="961" y="53"/>
+            <point key="canvasLocation" x="959" y="190"/>
         </scene>
     </scenes>
     <resources>
+        <image name="AirportIcon" width="30" height="30"/>
         <image name="ConvertIcon" width="48.5" height="32.5"/>
         <image name="MapIcon" width="48.5" height="32.5"/>
     </resources>
