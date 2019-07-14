@@ -11,6 +11,7 @@ import UIKit
 class ConversionViewController : UIViewController {
     
     @IBOutlet var celsiusLabel: UILabel!
+    @IBOutlet var isReallyLabel: UILabel!
     @IBOutlet var textField: UITextField!
     
     var fahrenheitValue: Measurement<UnitTemperature>? {
@@ -40,7 +41,25 @@ class ConversionViewController : UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("ConversionViewController loaded its view.")
+        
         updateCelsiusLabel()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        let date = Date()
+        let calendar = Calendar.current
+        let components = calendar.dateComponents(Set<Calendar.Component>(arrayLiteral: Calendar.Component.hour, Calendar.Component.minute), from: date)
+        
+        if let hour = components.hour, let minutes = components.minute {
+            if hour > 21 || (hour < 6 && minutes <= 45) {
+                isReallyLabel.textColor = UIColor.lightGray
+                view.backgroundColor = UIColor(red: 48.0/255.0, green: 49.0/255.0, blue: 52.0/255.0, alpha: 1.0)
+            } else {
+                isReallyLabel.textColor = nil
+                view.backgroundColor = UIColor(red: 245.0/255.0, green: 244.0/255.0, blue: 241.0/255.0, alpha: 1.0)
+            }
+        }
     }
     
     @IBAction func fahrenheitFieldEditingChanged(_ textField: UITextField) {
