@@ -14,7 +14,10 @@ class WebViewController: UIViewController {
     override func loadView() {
         let webView = WKWebView()
         
-        let request = URLRequest(url: URL(string: "https://www.bignerdranch.com")!)
+        let currentLocale = Locale.current
+        
+        var request = URLRequest(url: URL(string: "https://www.bignerdranch.com")!)
+        request.setValue(currentLocale.identifier, forHTTPHeaderField: "Accept-Language")
         webView.load(request)
         
         view = webView
