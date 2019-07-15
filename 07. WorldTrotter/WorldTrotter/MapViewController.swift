@@ -26,7 +26,11 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         view = mapView
         locationManager = CLLocationManager()
         
-        let segmentedControl = UISegmentedControl(items: ["Standard", "Hybrid", "Satellite"])
+        let standardString = NSLocalizedString("Standard", comment: "Standard map view")
+        let hybridString = NSLocalizedString("Hybrid", comment: "Hybrid map view")
+        let satelliteString = NSLocalizedString("Satellite", comment: "Satellite map view")
+    
+        let segmentedControl = UISegmentedControl(items: [standardString, hybridString, satelliteString])
         segmentedControl.backgroundColor = UIColor.white.withAlphaComponent(0.5)
         segmentedControl.selectedSegmentIndex = 0
         
@@ -100,19 +104,25 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         let birthLocationPoint = MKPointAnnotation()
         birthLocationPoint.coordinate = birthLocationCoordinates
         birthLocationPoint.title = "Ames, IA"
-        birthLocationPoint.subtitle = "The place where I was born"
+        
+        let birthLocationSubtitleString = NSLocalizedString("The place where I was born", comment: "The place where I was born")
+        birthLocationPoint.subtitle = birthLocationSubtitleString
         
         let currentResidenceCoordinates = CLLocationCoordinate2D(latitude: 35.2981943, longitude: -81.01590809999999)
         let currentResidencePoint = MKPointAnnotation()
         currentResidencePoint.coordinate = currentResidenceCoordinates
         currentResidencePoint.title = "Mount Holly, NC"
-        currentResidencePoint.subtitle = "The place where I currently live"
+        
+        let currentResidenceSubtitleString = NSLocalizedString("The place where I currently live", comment: "The place where I currently live")
+        currentResidencePoint.subtitle = currentResidenceSubtitleString
         
         let interestingLocationCoordinates = CLLocationCoordinate2D(latitude: 19.296876, longitude: -81.383275)
         let interestingLocationPoint = MKPointAnnotation()
         interestingLocationPoint.coordinate = interestingLocationCoordinates
         interestingLocationPoint.title = "Grand Cayman, Cayman Islands"
-        interestingLocationPoint.subtitle = "Interesting place I have visited"
+        
+        let interestingLocationSubtitleString = NSLocalizedString("Interesting place I have visited", comment: "Interesting place I have visited")
+        interestingLocationPoint.subtitle = interestingLocationSubtitleString
         
         interestingLocations = [birthLocationPoint, currentResidencePoint, interestingLocationPoint]
     }

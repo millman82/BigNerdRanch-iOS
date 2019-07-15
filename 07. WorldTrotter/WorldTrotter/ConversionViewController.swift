@@ -28,7 +28,7 @@ class ConversionViewController : UIViewController {
         }
     }
     
-    var allowedCharacters = CharacterSet(charactersIn: "0123456789.").inverted
+    var allowedCharacters = CharacterSet(charactersIn: "0123456789")
     
     let numberFormatter: NumberFormatter = {
         let nf = NumberFormatter()
@@ -63,8 +63,8 @@ class ConversionViewController : UIViewController {
     }
     
     @IBAction func fahrenheitFieldEditingChanged(_ textField: UITextField) {
-        if let text = textField.text, let value = Double(text) {
-            fahrenheitValue = Measurement(value: value, unit: .fahrenheit)
+        if let text = textField.text, let number = numberFormatter.number(from: text) {
+            fahrenheitValue = Measurement(value: number.doubleValue, unit: .fahrenheit)
         } else {
             fahrenheitValue = nil
         }
@@ -88,15 +88,19 @@ extension ConversionViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        let components = string.components(separatedBy: allowedCharacters)
-        let filtered = components.joined(separator: "")
+        let currentLocale = Locale.current
+        let decimalSeparator = currentLocale.decimalSeparator ?? "."
+        
+        allowedCharacters.insert(charactersIn: decimalSeparator)
+        let components = string.components(separatedBy: allowedCharacters.inverted)
+        let filtered = components.joined()
         
         if string != filtered {
             return false
         }
         
-        let existingTextHasDecimalSeparator = textField.text?.range(of: ".")
-        let replacementTextHasDecimalSeparator = string.range(of: ".")
+        let existingTextHasDecimalSeparator = textField.text?.range(of: decimalSeparator)
+        let replacementTextHasDecimalSeparator = string.range(of: decimalSeparator)
         
         if existingTextHasDecimalSeparator != nil, replacementTextHasDecimalSeparator != nil {
             return false
