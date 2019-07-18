@@ -17,6 +17,8 @@ class ViewController: UIViewController {
     @IBOutlet var nextQuestionLabelCenterXConstraint: NSLayoutConstraint!
     @IBOutlet var answerLabel: UILabel!
     
+    var layoutGuide: UILayoutGuide! = UILayoutGuide()
+    
     let questions: [String] = [
         "What is 7+7?",
         "What is the capital of Vermont?",
@@ -35,7 +37,9 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         currentQuestionLabel.text = questions[currentQuestionIndex]
-        
+        view.addLayoutGuide(layoutGuide)
+        layoutGuide.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        layoutGuide.trailingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         updateOffScreenLabel()
     }
     
@@ -47,8 +51,10 @@ class ViewController: UIViewController {
     }
     
     func updateOffScreenLabel() {
-        let screenWidth = view.frame.width
-        nextQuestionLabelCenterXConstraint.constant = -screenWidth
+        
+        nextQuestionLabelCenterXConstraint.isActive = false
+        nextQuestionLabelCenterXConstraint = nextQuestionLabel.centerXAnchor.constraint(equalTo: layoutGuide.centerXAnchor)
+        nextQuestionLabelCenterXConstraint.isActive = true
     }
     
     func animateLabelTransitions() {
@@ -58,8 +64,12 @@ class ViewController: UIViewController {
         
         // Animate the alpha and center the X constraints
         let screenWidth = view.frame.width
-        self.nextQuestionLabelCenterXConstraint.constant = 0
-        self.currentQuestionLabelCenterXConstraint.constant += screenWidth
+        currentQuestionLabelCenterXConstraint.constant += screenWidth
+        nextQuestionLabelCenterXConstraint.isActive = false
+        nextQuestionLabelCenterXConstraint = nextQuestionLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        nextQuestionLabelCenterXConstraint.isActive = true
+        
+        view.isUserInteractionEnabled = false
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: [.curveLinear], animations: {
             self.currentQuestionLabel.alpha = 0
@@ -71,6 +81,7 @@ class ViewController: UIViewController {
             swap(&self.currentQuestionLabelCenterXConstraint, &self.nextQuestionLabelCenterXConstraint)
             
             self.updateOffScreenLabel()
+            self.view.isUserInteractionEnabled = true
         })
     }
 
