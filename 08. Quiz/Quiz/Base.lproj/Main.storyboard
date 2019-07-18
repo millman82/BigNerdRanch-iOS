@@ -44,23 +44,34 @@
                                     <action selector="showAnswer:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ixS-7t-jqC"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BYv-JZ-Ko2">
+                                <rect key="frame" x="166.5" y="68" width="42" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="OQk-fe-2m1" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5LH-pM-3ug"/>
                             <constraint firstItem="RuC-Ze-RnL" firstAttribute="top" secondItem="FW8-Ti-1Ph" secondAttribute="bottom" constant="8" id="D73-C6-H7i"/>
+                            <constraint firstItem="BYv-JZ-Ko2" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="ORR-1e-7VU"/>
                             <constraint firstItem="OQk-fe-2m1" firstAttribute="top" secondItem="48J-Sq-KxU" secondAttribute="bottom" constant="8" id="PLL-sw-2wl"/>
                             <constraint firstItem="FW8-Ti-1Ph" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="UXH-Nb-PCE"/>
                             <constraint firstItem="FW8-Ti-1Ph" firstAttribute="top" secondItem="OQk-fe-2m1" secondAttribute="bottom" constant="115" id="X2X-PO-3tE"/>
                             <constraint firstItem="48J-Sq-KxU" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="48" id="XIe-yr-dAK"/>
                             <constraint firstItem="RuC-Ze-RnL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vEj-QP-EtO"/>
+                            <constraint firstItem="BYv-JZ-Ko2" firstAttribute="top" secondItem="48J-Sq-KxU" secondAttribute="top" id="vEm-b4-RZe"/>
                             <constraint firstItem="48J-Sq-KxU" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="yFe-oI-FlA"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
                         <outlet property="answerLabel" destination="FW8-Ti-1Ph" id="UJR-ze-YtD"/>
-                        <outlet property="questionLabel" destination="48J-Sq-KxU" id="coy-tU-bed"/>
+                        <outlet property="currentQuestionLabel" destination="48J-Sq-KxU" id="WGr-Lc-YQ7"/>
+                        <outlet property="currentQuestionLabelCenterXConstraint" destination="yFe-oI-FlA" id="WPU-rO-vJe"/>
+                        <outlet property="nextQuestionLabel" destination="BYv-JZ-Ko2" id="01y-ps-GQG"/>
+                        <outlet property="nextQuestionLabelCenterXConstraint" destination="ORR-1e-7VU" id="CF5-Uf-va3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
