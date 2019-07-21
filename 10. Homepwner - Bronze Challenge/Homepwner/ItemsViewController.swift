@@ -24,9 +24,9 @@ class ItemsViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return itemStore.itemsOver50().count
+            return itemStore.itemsOver50.count
         default:
-            return itemStore.items50andUnder().count
+            return itemStore.otherItems.count
         }
     }
     
@@ -50,9 +50,9 @@ class ItemsViewController: UITableViewController {
         var item: Item!
         switch indexPath.section {
         case 0:
-            item = itemStore.itemsOver50()[indexPath.row]
+            item = itemStore.itemsOver50[indexPath.row]
         default:
-            item = itemStore.items50andUnder()[indexPath.row]
+            item = itemStore.otherItems[indexPath.row]
         }
         
         cell.textLabel?.text = item.name

@@ -15,6 +15,7 @@ class ItemsViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.backgroundColor = UIColor(patternImage: #imageLiteral(resourceName: "tableviewbackground"))
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -33,12 +34,26 @@ class ItemsViewController: UITableViewController {
             let item = itemStore.allItems[indexPath.row]
             
             cell.textLabel?.text = item.name
+            cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
             cell.detailTextLabel?.text = "$\(item.valueInDollars)"
+            cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20)
         } else {
             cell.textLabel?.text = "No more items!"
+            cell.textLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
             cell.detailTextLabel?.text = ""
+            cell.detailTextLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         }
         
+        cell.backgroundColor? = UIColor(white: 0, alpha: 0)
+        
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row < itemStore.allItems.count {
+            return 60
+        }
+        
+        return 44
     }
 }

@@ -10,23 +10,24 @@ import UIKit
 
 class ItemStore {
     
-    var allItems = [Item]()
+    var allItems = [Item]() {
+        didSet {
+            applyGrouping()
+        }
+    }
     
-    func items50andUnder() -> [Item] {
-            let items = allItems.filter { (item) -> Bool in
-                return item.valueInDollars <= 50
-            }
-            
-            return items
+    var itemsOver50 = [Item]()
+    var otherItems = [Item]()
+    
+    func applyGrouping() {
+        itemsOver50 = self.allItems.filter { (item) -> Bool in
+            return item.valueInDollars > 50
         }
         
-        func itemsOver50() -> [Item] {
-            let items = self.allItems.filter { (item) -> Bool in
-                return item.valueInDollars > 50
-            }
-            
-            return items
-        }
+        otherItems = self.allItems.filter({ (item) -> Bool in
+            return item.valueInDollars <= 50
+        })
+    }
     
     @discardableResult func createItem() -> Item {
         let newItem = Item(random: true)
