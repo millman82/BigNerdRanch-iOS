@@ -48,10 +48,10 @@ class ItemsViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        // Get a new or recycled cell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-        
         if indexPath.row < itemStore.allItems.count {
+            // Get a new or recycled cell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+            
             // Set the text on the cell with the description of the item
             // that is at the nth index of items, where n = row this cell
             // will appear in on the tableview
@@ -61,14 +61,14 @@ class ItemsViewController: UITableViewController {
             cell.textLabel?.font = UIFont.systemFont(ofSize: 20)
             cell.detailTextLabel?.text = "$\(item.valueInDollars)"
             cell.detailTextLabel?.font = UIFont.systemFont(ofSize: 20)
+            
+            return cell
         } else {
+            let cell = UITableViewCell(style: .value1, reuseIdentifier: "NoMoreItems")
             cell.textLabel?.text = "No more items!"
-            cell.textLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
-            cell.detailTextLabel?.text = ""
-            cell.detailTextLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+            
+            return cell
         }
-        
-        return cell
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -97,6 +97,10 @@ class ItemsViewController: UITableViewController {
             // Present the alert controller
             present(ac, animated: true, completion: nil)
         }
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.row < itemStore.allItems.count
     }
     
     override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
