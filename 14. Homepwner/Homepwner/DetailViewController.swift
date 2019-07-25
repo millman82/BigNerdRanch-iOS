@@ -10,9 +10,9 @@ import UIKit
 
 class DetailViewController: UIViewController {
     
-    @IBOutlet var nameField: UITextField!
-    @IBOutlet var serialNumberField: UITextField!
-    @IBOutlet var valueField: UITextField!
+    @IBOutlet var nameField: ItemDetailTextField!
+    @IBOutlet var serialNumberField: ItemDetailTextField!
+    @IBOutlet var valueField: ItemDetailTextField!
     @IBOutlet var dateLabel: UILabel!
     
     var item: Item! {
