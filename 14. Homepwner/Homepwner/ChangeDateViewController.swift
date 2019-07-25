@@ -8,23 +8,30 @@
 
 import UIKit
 
+protocol ChangeDateDelegate {
+    func dateChanged(_ date: Date)
+}
+
 class ChangeDateViewController: UIViewController {
     
     @IBOutlet var datePicker: UIDatePicker!
     
-    var item: Item!
+    var date: Date!
+    var delegate: ChangeDateDelegate!
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.title = "Date Created"
+        self.title = "Select Date"
         
-        datePicker.date = item.dateCreated
+        datePicker.date = date
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
-        item.dateCreated = datePicker.date
+        if date != datePicker.date {
+            delegate.dateChanged(datePicker.date)
+        }
     }
 }

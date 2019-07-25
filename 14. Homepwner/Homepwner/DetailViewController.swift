@@ -70,7 +70,8 @@ class DetailViewController: UIViewController {
         switch segue.identifier {
         case "changeDate"?:
             let changeDateViewController = segue.destination as! ChangeDateViewController
-            changeDateViewController.item = item
+            changeDateViewController.date = item.dateCreated
+            changeDateViewController.delegate = self
         default:
             preconditionFailure("Unexpected segue identifier.")
         }
@@ -81,5 +82,12 @@ extension DetailViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+}
+
+extension DetailViewController: ChangeDateDelegate {
+    func dateChanged(_ date: Date) {
+        print("called delegate with date \(dateFormatter.string(from: date))")
+        item.dateCreated = date
     }
 }
