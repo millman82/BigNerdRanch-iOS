@@ -65,6 +65,16 @@ class DetailViewController: UIViewController {
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case "changeDate"?:
+            let changeDateViewController = segue.destination as! ChangeDateViewController
+            changeDateViewController.item = item
+        default:
+            preconditionFailure("Unexpected segue identifier.")
+        }
+    }
 }
 
 extension DetailViewController: UITextFieldDelegate {

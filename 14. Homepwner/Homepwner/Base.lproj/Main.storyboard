@@ -146,12 +146,19 @@
                                             </textField>
                                         </subviews>
                                     </stackView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Date Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Giz-96-fPI">
-                                        <rect key="frame" x="0.0" y="126" width="343" height="441"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Date Created" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Giz-96-fPI">
+                                        <rect key="frame" x="0.0" y="126" width="343" height="403"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zoE-mL-Jll">
+                                        <rect key="frame" x="0.0" y="537" width="343" height="30"/>
+                                        <state key="normal" title="Change Date"/>
+                                        <connections>
+                                            <segue destination="oSH-jL-K1n" kind="show" identifier="changeDate" id="Zl0-QT-Ckx"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="Foe-e5-o4w" firstAttribute="leading" secondItem="q51-7u-vvJ" secondAttribute="leading" id="agy-Ue-pC1"/>
@@ -187,6 +194,40 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1384.8" y="42.728635682158924"/>
+        </scene>
+        <!--Change Date View Controller-->
+        <scene sceneID="jog-RL-ksW">
+            <objects>
+                <viewController id="oSH-jL-K1n" customClass="ChangeDateViewController" customModule="Homepwner" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="oGo-jD-CFK">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="DSE-qA-FQQ">
+                                <rect key="frame" x="16" y="72" width="343" height="567"/>
+                                <subviews>
+                                    <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" translatesAutoresizingMaskIntoConstraints="NO" id="lMo-6D-VYf">
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="567"/>
+                                    </datePicker>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="DSE-qA-FQQ" firstAttribute="leading" secondItem="Ykz-iX-TVx" secondAttribute="leading" constant="16" id="8vY-6O-OYt"/>
+                            <constraint firstItem="Ykz-iX-TVx" firstAttribute="trailing" secondItem="DSE-qA-FQQ" secondAttribute="trailing" constant="16" id="RBz-ho-Yhm"/>
+                            <constraint firstItem="Ykz-iX-TVx" firstAttribute="bottom" secondItem="DSE-qA-FQQ" secondAttribute="bottom" constant="28" id="ZWb-mR-ipm"/>
+                            <constraint firstItem="DSE-qA-FQQ" firstAttribute="top" secondItem="Ykz-iX-TVx" secondAttribute="top" constant="28" id="p3U-mF-YlQ"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Ykz-iX-TVx"/>
+                    </view>
+                    <connections>
+                        <outlet property="datePicker" destination="lMo-6D-VYf" id="QAi-a0-AGv"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8gb-w8-aCn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2169" y="45"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="2uL-g0-g8b">
