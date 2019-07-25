@@ -16,7 +16,7 @@ class ChangeDateViewController: UIViewController {
     
     @IBOutlet var datePicker: UIDatePicker!
     
-    var date: Date!
+    var date: Date?
     var delegate: ChangeDateDelegate!
     
     override func viewWillAppear(_ animated: Bool) {
@@ -24,7 +24,9 @@ class ChangeDateViewController: UIViewController {
         
         self.title = "Select Date"
         
-        datePicker.date = date
+        if let date = date {
+            datePicker.date = date
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

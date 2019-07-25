@@ -87,7 +87,6 @@ extension DetailViewController: UITextFieldDelegate {
 
 extension DetailViewController: ChangeDateDelegate {
     func dateChanged(_ date: Date) {
-        print("called delegate with date \(dateFormatter.string(from: date))")
         item.dateCreated = date
     }
 }
