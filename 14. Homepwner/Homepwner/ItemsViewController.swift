@@ -19,6 +19,12 @@ class ItemsViewController: UITableViewController {
         tableView.estimatedRowHeight = 65
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        tableView.reloadData()
+    }
+    
     @IBAction func addNewItem(_ sender: UIButton) {
         // Create a new item and add it to the store
         let newItem = itemStore.createItem()
