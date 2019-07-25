@@ -16,38 +16,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <view key="tableHeaderView" contentMode="scaleToFill" id="L6d-N5-l2v">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hu6-4q-gvh">
-                                    <rect key="frame" x="8" y="15" width="175.5" height="30"/>
-                                    <state key="normal" title="Edit"/>
-                                    <connections>
-                                        <action selector="toggleEditingMode:" destination="mnz-nm-jAS" eventType="touchUpInside" id="3TR-T8-JxM"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0OF-gF-Vo6">
-                                    <rect key="frame" x="191.5" y="15" width="175.5" height="30"/>
-                                    <state key="normal" title="Add"/>
-                                    <connections>
-                                        <action selector="addNewItem:" destination="mnz-nm-jAS" eventType="touchUpInside" id="1Pp-v2-ED7"/>
-                                    </connections>
-                                </button>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="trailing" secondItem="0OF-gF-Vo6" secondAttribute="trailing" constant="8" id="1Xv-NJ-x40"/>
-                                <constraint firstItem="0OF-gF-Vo6" firstAttribute="leading" secondItem="hu6-4q-gvh" secondAttribute="trailing" constant="8" id="GjV-fm-ETD"/>
-                                <constraint firstItem="hu6-4q-gvh" firstAttribute="centerY" secondItem="L6d-N5-l2v" secondAttribute="centerY" id="I1p-eZ-DAn"/>
-                                <constraint firstItem="0OF-gF-Vo6" firstAttribute="centerY" secondItem="L6d-N5-l2v" secondAttribute="centerY" id="Vlm-oc-C7t"/>
-                                <constraint firstItem="0OF-gF-Vo6" firstAttribute="width" secondItem="hu6-4q-gvh" secondAttribute="width" id="bLC-4G-oqF"/>
-                                <constraint firstItem="hu6-4q-gvh" firstAttribute="leading" secondItem="L6d-N5-l2v" secondAttribute="leading" constant="8" id="i4L-VM-Qvx"/>
-                            </constraints>
-                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ItemCell" rowHeight="65" id="Gfk-mi-wFa" customClass="ItemCell" customModule="Homepwner" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="88" width="375" height="65"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="65"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Gfk-mi-wFa" id="Ukw-KG-ysO">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="65"/>
@@ -95,7 +66,13 @@
                             <outlet property="delegate" destination="mnz-nm-jAS" id="LSS-6q-bOu"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Homepwner" id="Iia-Hl-xcs"/>
+                    <navigationItem key="navigationItem" title="Homepwner" id="Iia-Hl-xcs">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="rTd-9n-9XS">
+                            <connections>
+                                <action selector="addNewItem:" destination="mnz-nm-jAS" id="yjR-bF-Bhk"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MQj-rs-5K5" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
