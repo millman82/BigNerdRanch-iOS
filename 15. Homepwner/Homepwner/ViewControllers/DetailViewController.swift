@@ -87,6 +87,10 @@ class DetailViewController: UIViewController {
         // If the device has a camera, take a picture; otherwise, just pick from photo library
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             imagePicker.sourceType = .camera
+            imagePicker.cameraCaptureMode = .photo
+            let crosshairView = CrosshairView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height - 100.0))
+            crosshairView.backgroundColor = UIColor.clear
+            imagePicker.cameraOverlayView = crosshairView
         } else {
             imagePicker.sourceType = .photoLibrary
         }

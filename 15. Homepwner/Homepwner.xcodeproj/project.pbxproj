@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		271CF06A22EBFF050037F155 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 271CF06922EBFF050037F155 /* ImageStore.swift */; };
+		273981A022ECB48E00EBE2E1 /* CrosshairView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2739819F22ECB48E00EBE2E1 /* CrosshairView.swift */; };
 		27BB2D0522E2CAE300A18410 /* ItemsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB2D0422E2CAE300A18410 /* ItemsViewController.swift */; };
 		27BB2D0722E2CAF700A18410 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB2D0622E2CAF700A18410 /* Item.swift */; };
 		27BB2D0B22E2CC6A00A18410 /* ItemStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27BB2D0A22E2CC6A00A18410 /* ItemStore.swift */; };
@@ -42,6 +43,7 @@
 
 /* Begin PBXFileReference section */
 		271CF06922EBFF050037F155 /* ImageStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
+		2739819F22ECB48E00EBE2E1 /* CrosshairView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrosshairView.swift; sourceTree = "<group>"; };
 		27BB2D0422E2CAE300A18410 /* ItemsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemsViewController.swift; sourceTree = "<group>"; };
 		27BB2D0622E2CAF700A18410 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		27BB2D0A22E2CC6A00A18410 /* ItemStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemStore.swift; sourceTree = "<group>"; };
@@ -115,6 +117,14 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		2739819C22ECB2AB00EBE2E1 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2739819F22ECB48E00EBE2E1 /* CrosshairView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		27F42F6C22E2BBC700D154E8 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +152,7 @@
 				271CF06D22EC00060037F155 /* Models */,
 				271CF06C22EBFFDC0037F155 /* Stores */,
 				271CF06B22EBFFBE0037F155 /* ViewControllers */,
+				2739819C22ECB2AB00EBE2E1 /* Views */,
 				27EE41C622EA37450005D8E0 /* ItemDetailTextField.swift */,
 				27EC5BD722E55F81006DA3BF /* ItemCell.swift */,
 				27F42F7C22E2BBC700D154E8 /* Main.storyboard */,
@@ -304,6 +315,7 @@
 				27BB2D0522E2CAE300A18410 /* ItemsViewController.swift in Sources */,
 				27BB2D0722E2CAF700A18410 /* Item.swift in Sources */,
 				27BB2D0B22E2CC6A00A18410 /* ItemStore.swift in Sources */,
+				273981A022ECB48E00EBE2E1 /* CrosshairView.swift in Sources */,
 				27F7419222E6A7A900CE6D44 /* DetailViewController.swift in Sources */,
 				27EE41CB22EA407C0005D8E0 /* ChangeDateViewController.swift in Sources */,
 				271CF06A22EBFF050037F155 /* ImageStore.swift in Sources */,
@@ -485,12 +497,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YANEU7VTX5;
 				INFOPLIST_FILE = Homepwner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bignerdranch.Homepwner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmiller.Homepwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -502,12 +515,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = YANEU7VTX5;
 				INFOPLIST_FILE = Homepwner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bignerdranch.Homepwner;
+				PRODUCT_BUNDLE_IDENTIFIER = com.timmiller.Homepwner;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
