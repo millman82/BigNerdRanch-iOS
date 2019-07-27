@@ -79,6 +79,7 @@ class DetailViewController: UIViewController {
     @IBAction func takePicture(_ sender: UIBarButtonItem) {
         
         let imagePicker = UIImagePickerController()
+        imagePicker.allowsEditing = true
         
         // If the device has a camera, take a picture; otherwise, just pick from photo library
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -122,7 +123,7 @@ extension DetailViewController: UINavigationControllerDelegate, UIImagePickerCon
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         // Get picked image from info dictionary
-        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        let image = info[UIImagePickerController.InfoKey.editedImage] as! UIImage
         
         // Store the image in the ImageStore for the item's key
         imageStore.setImage(image, forKey: item.itemKey)
