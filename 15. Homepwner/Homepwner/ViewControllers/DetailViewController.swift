@@ -22,6 +22,8 @@ class DetailViewController: UIViewController {
         }
     }
     
+    var imageStore: ImageStore!
+    
     let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -44,6 +46,13 @@ class DetailViewController: UIViewController {
         serialNumberField.text = item.serialNumber
         valueField.text = numberFormatter.string(from: NSNumber(value: item.valueInDollars))
         dateLabel.text = dateFormatter.string(from: item.dateCreated)
+        
+        // Get the item key
+        let key = item.itemKey
+        
+        // If there is an associated image with the item display it on the image view
+        let imageToDisplay = imageStore.image(forKey: key)
+        imageView.image = imageToDisplay
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -114,6 +123,9 @@ extension DetailViewController: UINavigationControllerDelegate, UIImagePickerCon
         
         // Get picked image from info dictionary
         let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        
+        // Store the image in the ImageStore for the item's key
+        imageStore.setImage(image, forKey: item.itemKey)
         
         // Put that image on the screen in the image view
         imageView.image = image
