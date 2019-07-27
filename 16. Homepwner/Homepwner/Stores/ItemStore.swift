@@ -50,7 +50,7 @@ class ItemStore {
     func saveChanges() -> Bool {
         do {
             print("Saving items to: \(itemArchiveURL.path)")
-            let data = try NSKeyedArchiver.archivedData(withRootObject: allItems, requiringSecureCoding: false)
+            let data = try PropertyListEncoder().encode(allItems)
             try data.write(to: itemArchiveURL)
             return true
         } catch {
@@ -60,12 +60,27 @@ class ItemStore {
     }
     
     init() {
-        if let data = try? Data(contentsOf: itemArchiveURL) {
-            if let archivedItems = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Item] {
+        let data = try? Data(contentsOf: itemArchiveURL)
+        
+        do {
+            if let data = data {
+                let archivedItems = try PropertyListDecoder().decode([Item].self, from: data)
                 allItems = archivedItems
                 print("Loaded archived items")
-            } else {
-                print("Loading archive file failed or there's no file to load")
+            }
+        } catch {
+            print("Loading archive file failed \(error)")
+            
+            if let data = data {
+                // This may have been encoded the legacy way
+                do {
+                    if let archivedItems = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Item] {
+                        allItems = archivedItems
+                        print("Loaded items from legacy archive")
+                    }
+                } catch {
+                    print("Archive file corrupt \(error)")
+                }
             }
         }
     }
