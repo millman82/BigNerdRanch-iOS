@@ -88,6 +88,33 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		271CF06B22EBFFBE0037F155 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				27EE41CA22EA407C0005D8E0 /* ChangeDateViewController.swift */,
+				27F7419122E6A7A900CE6D44 /* DetailViewController.swift */,
+				27BB2D0422E2CAE300A18410 /* ItemsViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		271CF06C22EBFFDC0037F155 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				271CF06922EBFF050037F155 /* ImageStore.swift */,
+				27BB2D0A22E2CC6A00A18410 /* ItemStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		271CF06D22EC00060037F155 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				27BB2D0622E2CAF700A18410 /* Item.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		27F42F6C22E2BBC700D154E8 = {
 			isa = PBXGroup;
 			children = (
@@ -112,14 +139,11 @@
 			isa = PBXGroup;
 			children = (
 				27F42F7822E2BBC700D154E8 /* AppDelegate.swift */,
-				27EE41CA22EA407C0005D8E0 /* ChangeDateViewController.swift */,
-				27F7419122E6A7A900CE6D44 /* DetailViewController.swift */,
+				271CF06D22EC00060037F155 /* Models */,
+				271CF06C22EBFFDC0037F155 /* Stores */,
+				271CF06B22EBFFBE0037F155 /* ViewControllers */,
 				27EE41C622EA37450005D8E0 /* ItemDetailTextField.swift */,
-				27BB2D0422E2CAE300A18410 /* ItemsViewController.swift */,
 				27EC5BD722E55F81006DA3BF /* ItemCell.swift */,
-				27BB2D0622E2CAF700A18410 /* Item.swift */,
-				27BB2D0A22E2CC6A00A18410 /* ItemStore.swift */,
-				271CF06922EBFF050037F155 /* ImageStore.swift */,
 				27F42F7C22E2BBC700D154E8 /* Main.storyboard */,
 				27F42F7F22E2BBC900D154E8 /* Assets.xcassets */,
 				27F42F8122E2BBC900D154E8 /* LaunchScreen.storyboard */,
