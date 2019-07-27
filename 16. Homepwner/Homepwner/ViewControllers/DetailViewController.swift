@@ -157,6 +157,8 @@ extension DetailViewController: UINavigationControllerDelegate, UIImagePickerCon
         // Put that image on the screen in the image view
         imageView.image = image
         
+        removeImageButton.isHidden = false
+        
         // Take image picker off the screen - you must call this dismiss method
         dismiss(animated: true, completion: nil)
     }
