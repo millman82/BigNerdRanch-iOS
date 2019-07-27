@@ -15,6 +15,7 @@ class DetailViewController: UIViewController {
     @IBOutlet var valueField: ItemDetailTextField!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var removeImageButton: UIButton!
     
     var item: Item! {
         didSet {
@@ -53,6 +54,8 @@ class DetailViewController: UIViewController {
         // If there is an associated image with the item display it on the image view
         let imageToDisplay = imageStore.image(forKey: key)
         imageView.image = imageToDisplay
+        
+        removeImageButton.isHidden = imageToDisplay == nil ? true : false
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -103,6 +106,12 @@ class DetailViewController: UIViewController {
         default:
             preconditionFailure("Unexpected segue identifier.")
         }
+    }
+    
+    @IBAction func removeImage(_ sender: UIButton) {
+        imageStore.deleteImage(forKey: item.itemKey)
+        imageView.image = nil
+        removeImageButton.isHidden = true
     }
 }
 
