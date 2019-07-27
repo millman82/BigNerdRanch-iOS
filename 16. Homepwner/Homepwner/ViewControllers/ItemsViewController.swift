@@ -13,6 +13,8 @@ class ItemsViewController: UITableViewController {
     var itemStore: ItemStore!
     var imageStore: ImageStore!
     
+    // MARK: - View Life Cycle
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -26,6 +28,26 @@ class ItemsViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // If the triggered segue is the "showItem" segue
+        switch segue.identifier {
+        case "showItem"?:
+            // Figure out which row was just tapped
+            if let row = tableView.indexPathForSelectedRow?.row {
+                
+                // Get the item associated with this row and pass it along
+                let item = itemStore.allItems[row]
+                let detailViewController = segue.destination as! DetailViewController
+                detailViewController.item = item
+                detailViewController.imageStore = imageStore
+            }
+        default:
+            preconditionFailure("Unexpected segue identifier.")
+        }
+    }
+    
+    // MARK: - Actions
+    
     @IBAction func addNewItem(_ sender: UIBarButtonItem) {
         // Create a new item and add it to the store
         let newItem = itemStore.createItem()
@@ -38,6 +60,8 @@ class ItemsViewController: UITableViewController {
             tableView.insertRows(at: [indexPath], with: .automatic)
         }
     }
+    
+    // MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return itemStore.allItems.count + 1
@@ -118,23 +142,7 @@ class ItemsViewController: UITableViewController {
         itemStore.moveItem(from: sourceIndexPath.row, to: destinationIndexPath.row)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // If the triggered segue is the "showItem" segue
-        switch segue.identifier {
-        case "showItem"?:
-            // Figure out which row was just tapped
-            if let row = tableView.indexPathForSelectedRow?.row {
-                
-                // Get the item associated with this row and pass it along
-                let item = itemStore.allItems[row]
-                let detailViewController = segue.destination as! DetailViewController
-                detailViewController.item = item
-                detailViewController.imageStore = imageStore
-            }
-        default:
-            preconditionFailure("Unexpected segue identifier.")
-        }
-    }
+    // MARK: - Initializers
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)

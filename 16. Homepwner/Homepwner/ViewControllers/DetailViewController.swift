@@ -40,6 +40,8 @@ class DetailViewController: UIViewController {
         return formatter
     }()
     
+    // MARK: - View Life Cycle
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -75,6 +77,19 @@ class DetailViewController: UIViewController {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+            switch segue.identifier {
+            case "changeDate"?:
+                let changeDateViewController = segue.destination as! ChangeDateViewController
+                changeDateViewController.date = item.dateCreated
+                changeDateViewController.delegate = self
+            default:
+                preconditionFailure("Unexpected segue identifier.")
+            }
+        }
+    
+    // MARK: - Actions
+    
     @IBAction func backgroundTapped(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
     }
@@ -101,17 +116,6 @@ class DetailViewController: UIViewController {
         present(imagePicker, animated: true, completion: nil)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        switch segue.identifier {
-        case "changeDate"?:
-            let changeDateViewController = segue.destination as! ChangeDateViewController
-            changeDateViewController.date = item.dateCreated
-            changeDateViewController.delegate = self
-        default:
-            preconditionFailure("Unexpected segue identifier.")
-        }
-    }
-    
     @IBAction func removeImage(_ sender: UIButton) {
         imageStore.deleteImage(forKey: item.itemKey)
         imageView.image = nil
@@ -120,6 +124,9 @@ class DetailViewController: UIViewController {
 }
 
 extension DetailViewController: UITextFieldDelegate {
+    
+    // MARK: - UITextFieldDelegate
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -127,12 +134,18 @@ extension DetailViewController: UITextFieldDelegate {
 }
 
 extension DetailViewController: ChangeDateDelegate {
+    
+    // MARK: - ChangeDateDelegate
+    
     func dateChanged(_ date: Date) {
         item.dateCreated = date
     }
 }
 
 extension DetailViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    
+    // MARK: - UIImagePIckerControllerDelegate
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         // Get picked image from info dictionary

@@ -19,6 +19,8 @@ class ChangeDateViewController: UIViewController {
     var date: Date?
     var delegate: ChangeDateDelegate!
     
+    // MARK: - View Life Cycle
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
