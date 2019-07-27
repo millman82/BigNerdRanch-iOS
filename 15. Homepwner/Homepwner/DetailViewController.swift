@@ -14,6 +14,7 @@ class DetailViewController: UIViewController {
     @IBOutlet var serialNumberField: ItemDetailTextField!
     @IBOutlet var valueField: ItemDetailTextField!
     @IBOutlet var dateLabel: UILabel!
+    @IBOutlet var imageView: UIImageView!
     
     var item: Item! {
         didSet {
@@ -66,6 +67,23 @@ class DetailViewController: UIViewController {
         view.endEditing(true)
     }
     
+    @IBAction func takePicture(_ sender: UIBarButtonItem) {
+        
+        let imagePicker = UIImagePickerController()
+        
+        // If the device has a camera, take a picture; otherwise, just pick from photo library
+        if UIImagePickerController.isSourceTypeAvailable(.camera) {
+            imagePicker.sourceType = .camera
+        } else {
+            imagePicker.sourceType = .photoLibrary
+        }
+        
+        imagePicker.delegate = self
+        
+        // Place image picker on the screen
+        present(imagePicker, animated: true, completion: nil)
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         switch segue.identifier {
         case "changeDate"?:
@@ -88,5 +106,19 @@ extension DetailViewController: UITextFieldDelegate {
 extension DetailViewController: ChangeDateDelegate {
     func dateChanged(_ date: Date) {
         item.dateCreated = date
+    }
+}
+
+extension DetailViewController: UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        // Get picked image from info dictionary
+        let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+        
+        // Put that image on the screen in the image view
+        imageView.image = image
+        
+        // Take image picker off the screen - you must call this dismiss method
+        dismiss(animated: true, completion: nil)
     }
 }
