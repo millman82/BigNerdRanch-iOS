@@ -70,18 +70,6 @@ class ItemStore {
             }
         } catch {
             print("Loading archive file failed \(error)")
-            
-            if let data = data {
-                // This may have been encoded the legacy way
-                do {
-                    if let archivedItems = try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? [Item] {
-                        allItems = archivedItems
-                        print("Loaded items from legacy archive")
-                    }
-                } catch {
-                    print("Archive file corrupt \(error)")
-                }
-            }
         }
     }
 }

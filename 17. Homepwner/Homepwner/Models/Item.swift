@@ -8,7 +8,7 @@
 
 import UIKit
 
-class Item: NSObject, NSCoding, Codable {
+struct Item: Codable, Equatable {
     
     var name: String
     var valueInDollars: Int
@@ -16,37 +16,15 @@ class Item: NSObject, NSCoding, Codable {
     var dateCreated: Date
     let itemKey: String
     
-    func encode(with coder: NSCoder) {
-        coder.encode(name, forKey: "name")
-        coder.encode(dateCreated, forKey: "dateCreated")
-        coder.encode(itemKey, forKey: "itemKey")
-        coder.encode(serialNumber, forKey: "serialNumber")
-        
-        coder.encode(valueInDollars, forKey: "valueInDollars")
-    }
-    
     init(name: String, serialNumber: String?, valueInDollars: Int) {
         self.name = name
         self.valueInDollars = valueInDollars
         self.serialNumber = serialNumber
         self.dateCreated = Date()
         self.itemKey = UUID().uuidString
-        
-        super.init()
     }
     
-    required init?(coder: NSCoder) {
-        name = coder.decodeObject(forKey: "name") as! String
-        dateCreated = coder.decodeObject(forKey: "dateCreated") as! Date
-        itemKey = coder.decodeObject(forKey: "itemKey") as! String
-        serialNumber = coder.decodeObject(forKey: "serialNumber") as! String?
-        
-        valueInDollars = coder.decodeInteger(forKey: "valueInDollars")
-        
-        super.init()
-    }
-    
-    convenience init(random: Bool = false) {
+    init(random: Bool = false) {
         if random {
             let adjectives = ["Fluffy", "Rusty", "Shiny"]
             let nouns = ["Bear", "Spork", "Mac"]
