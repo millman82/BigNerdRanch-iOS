@@ -54,7 +54,6 @@ class DrawView: UIView {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         // Log statement to see the order of events
         print(#function)
         
@@ -67,7 +66,6 @@ class DrawView: UIView {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         // Log statemetn to see the order of events
         print(#function)
         
@@ -80,6 +78,15 @@ class DrawView: UIView {
                 currentLines.removeValue(forKey: key)
             }
         }
+        
+        setNeedsDisplay()
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        // Log statement to see the order of events
+        print(#function)
+        
+        currentLines.removeAll()
         
         setNeedsDisplay()
     }
