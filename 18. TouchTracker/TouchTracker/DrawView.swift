@@ -19,12 +19,6 @@ class DrawView: UIView {
         }
     }
     
-    @IBInspectable var currentLineColor: UIColor = UIColor.red {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    
     @IBInspectable var lineThickness: CGFloat = 10 {
         didSet {
             setNeedsDisplay()
@@ -47,8 +41,9 @@ class DrawView: UIView {
             stroke(line)
         }
         
-        currentLineColor.setStroke()
         for (_, line) in currentLines {
+            line.color.setStroke()
+            
             stroke(line)
         }
     }
