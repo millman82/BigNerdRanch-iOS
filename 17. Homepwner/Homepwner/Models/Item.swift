@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Item: Codable, Equatable {
+class Item: NSObject, Codable {
     
     var name: String
     var valueInDollars: Int
@@ -24,7 +24,7 @@ struct Item: Codable, Equatable {
         self.itemKey = UUID().uuidString
     }
     
-    init(random: Bool = false) {
+    convenience init(random: Bool = false) {
         if random {
             let adjectives = ["Fluffy", "Rusty", "Shiny"]
             let nouns = ["Bear", "Spork", "Mac"]
