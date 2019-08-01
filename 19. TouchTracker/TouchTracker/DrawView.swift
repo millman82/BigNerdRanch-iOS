@@ -152,6 +152,27 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
+    @objc func doubleTap(_ gestureRecognizer: UIGestureRecognizer) {
+        print("Recognized a double tap")
+        
+        currentLines.removeAll()
+        finishedLines.removeAll()
+        circlePoints.removeAll()
+        currentCircle = nil
+        finishedCircles.removeAll()
+        
+        setNeedsDisplay()
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        
+        let doubleTapRecognizer = UITapGestureRecognizer(target: self, action: #selector(DrawView.doubleTap(_:)))
+        doubleTapRecognizer.numberOfTapsRequired = 2
+        doubleTapRecognizer.delaysTouchesBegan = true
+        addGestureRecognizer(doubleTapRecognizer)
+    }
+    
     private func updateCurrentCircle() {
         let points = Array(circlePoints)
         
