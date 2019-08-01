@@ -13,8 +13,10 @@ class DrawView: UIView {
     var circlePoints = [NSValue:CGPoint]()
     var currentCircle: Circle?
     var finishedCircles = [Circle]()
+    var selectedCircleIndex: Int?
     var currentLines = [NSValue:Line]()
     var finishedLines = [Line]()
+    var selectedLineIndex: Int?
     
     @IBInspectable var finishedLineColor: UIColor = UIColor.black {
         didSet {
@@ -44,6 +46,34 @@ class DrawView: UIView {
         path.stroke()
     }
     
+    func stroke(_ circle: Circle) {
+        let path = UIBezierPath(ovalIn: circle.circleRect)
+        path.lineWidth = lineThickness
+        path.stroke()
+    }
+    
+    func indexOfLine(at point: CGPoint) -> Int? {
+        // Find a line close to point
+        for (index, line) in finishedLines.enumerated() {
+            let begin = line.begin
+            let end = line.end
+            
+            // Check a few points on the line
+            for t in stride(from: CGFloat(0), to: 1.0, by: 0.05) {
+                let x = begin.x + ((end.x - begin.x) * t)
+                let y = begin.y + ((end.y - begin.y) * t)
+                
+                // If the tapped point is within 20 points, let's return this line
+                if hypot(x - point.x, y - point.y) < 20.0 {
+                    return index
+                }
+            }
+        }
+        
+        // If nothing is close enough to the tapped point, then we did not select a line
+        return nil
+    }
+    
     override func draw(_ rect: CGRect) {
         finishedLineColor.setStroke()
         for line in finishedLines {
@@ -51,8 +81,7 @@ class DrawView: UIView {
         }
         finishedLineColor.setFill()
         for finishedCircle in finishedCircles {
-            let circle = UIBezierPath(ovalIn: finishedCircle.circleRect)
-            circle.stroke()
+            stroke(finishedCircle)
         }
         
         for (_, line) in currentLines {
@@ -61,10 +90,21 @@ class DrawView: UIView {
             stroke(line)
         }
         
+        if let index = selectedLineIndex {
+            UIColor.green.setStroke()
+            let selectedLine = finishedLines[index]
+            stroke(selectedLine)
+        }
+        
         currentLineColor.setStroke()
         if let currentCircle = currentCircle {
-            let circle = UIBezierPath(ovalIn: currentCircle.circleRect)
-            circle.stroke()
+            stroke(currentCircle)
+        }
+        
+        if let index = selectedCircleIndex {
+            UIColor.green.setStroke()
+            let selectedCircle = finishedCircles[index]
+            stroke(selectedCircle)
         }
     }
     
@@ -155,11 +195,22 @@ class DrawView: UIView {
     @objc func doubleTap(_ gestureRecognizer: UIGestureRecognizer) {
         print("Recognized a double tap")
         
+        selectedLineIndex = nil
         currentLines.removeAll()
         finishedLines.removeAll()
+        selectedCircleIndex = nil
         circlePoints.removeAll()
         currentCircle = nil
         finishedCircles.removeAll()
+        
+        setNeedsDisplay()
+    }
+    
+    @objc func tap(_ gestureRecognizer: UIGestureRecognizer) {
+        print("Recognized a tap")
+        
+        let point = gestureRecognizer.location(in: self)
+        selectedLineIndex = indexOfLine(at: point)
         
         setNeedsDisplay()
     }
@@ -171,6 +222,11 @@ class DrawView: UIView {
         doubleTapRecognizer.numberOfTapsRequired = 2
         doubleTapRecognizer.delaysTouchesBegan = true
         addGestureRecognizer(doubleTapRecognizer)
+        
+        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(DrawView.tap(_:)))
+        tapRecognizer.delaysTouchesBegan = true
+        tapRecognizer.require(toFail: doubleTapRecognizer)
+        addGestureRecognizer(tapRecognizer)
     }
     
     private func updateCurrentCircle() {
