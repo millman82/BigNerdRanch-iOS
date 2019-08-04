@@ -16,6 +16,7 @@ class DrawView: UIView {
     var selectedCircleIndex: Int?
     var currentLines = [NSValue:Line]()
     var finishedLines = [Line]()
+    var currentVelocity: CGFloat = 0
     var selectedLineIndex: Int? {
         didSet {
             if selectedLineIndex == nil {
@@ -53,7 +54,7 @@ class DrawView: UIView {
     
     func stroke(_ line: Line) {
         let path = UIBezierPath()
-        path.lineWidth = lineThickness
+        path.lineWidth = line.width
         path.lineCapStyle = .round
         
         path.move(to: line.begin)
@@ -178,6 +179,7 @@ class DrawView: UIView {
                 circlePoints[key] = touch.location(in: self)
             } else {
                 currentLines[key]?.end = touch.location(in: self)
+                currentLines[key]?.currentVelocity = currentVelocity
             }
         }
         
@@ -206,6 +208,7 @@ class DrawView: UIView {
             
             if var line = currentLines[key] {
                 line.end = touch.location(in: self)
+                line.currentVelocity = currentVelocity
                 
                 finishedLines.append(line)
                 currentLines.removeValue(forKey: key)
@@ -288,6 +291,14 @@ class DrawView: UIView {
     
     @objc func moveLine(_ gestureRecognizer: UIPanGestureRecognizer) {
         print("Recognized a pan")
+        
+        let velocity = gestureRecognizer.velocity(in: self)
+        print("Raw velocity: \(velocity)")
+        
+        let computedVelocity = hypot(velocity.x, velocity.y)
+        print("Computed velocity: \(computedVelocity)")
+        
+        currentVelocity = computedVelocity
         
         guard longPressRecognizer.state == .changed else { return }
         
