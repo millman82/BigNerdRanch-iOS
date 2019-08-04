@@ -24,6 +24,7 @@ class DrawView: UIView {
             }
         }
     }
+    var longPressRecognizer: UILongPressGestureRecognizer!
     var moveRecognizer: UIPanGestureRecognizer!
     
     @IBInspectable var finishedLineColor: UIColor = UIColor.black {
@@ -140,6 +141,8 @@ class DrawView: UIView {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Log statement to see the order of events
         print(#function)
+        
+        selectedLineIndex = nil
         
         if touches.count == 2 && currentCircle == nil {
             for touch in touches {
@@ -286,6 +289,8 @@ class DrawView: UIView {
     @objc func moveLine(_ gestureRecognizer: UIPanGestureRecognizer) {
         print("Recognized a pan")
         
+        guard longPressRecognizer.state == .changed else { return }
+        
         // If a line is selected...
         if let index = selectedLineIndex {
             // When the pan recognizer changes its position...
@@ -326,7 +331,7 @@ class DrawView: UIView {
         tapRecognizer.require(toFail: doubleTapRecognizer)
         addGestureRecognizer(tapRecognizer)
         
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DrawView.longPress(_:)))
+        longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DrawView.longPress(_:)))
         addGestureRecognizer(longPressRecognizer)
         
         moveRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DrawView.moveLine(_:)))
