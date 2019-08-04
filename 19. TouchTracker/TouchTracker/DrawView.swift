@@ -24,6 +24,7 @@ class DrawView: UIView {
             }
         }
     }
+    var moveRecognizer: UIPanGestureRecognizer!
     
     @IBInspectable var finishedLineColor: UIColor = UIColor.black {
         didSet {
@@ -42,6 +43,12 @@ class DrawView: UIView {
             setNeedsDisplay()
         }
     }
+    
+    override var canBecomeFirstResponder: Bool {
+        return true
+    }
+    
+    // MARK: - Drawing Methods
     
     func stroke(_ line: Line) {
         let path = UIBezierPath()
@@ -92,6 +99,8 @@ class DrawView: UIView {
         }
     }
     
+    // MARK: - View Methods
+    
     override func draw(_ rect: CGRect) {
         finishedLineColor.setStroke()
         for line in finishedLines {
@@ -125,6 +134,8 @@ class DrawView: UIView {
             stroke(selectedCircle)
         }
     }
+    
+    // MARK: - UIResponder Actions
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         // Log statement to see the order of events
@@ -210,10 +221,6 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
-    override var canBecomeFirstResponder: Bool {
-        return true
-    }
-    
     @objc func doubleTap(_ gestureRecognizer: UIGestureRecognizer) {
         print("Recognized a double tap")
         
@@ -259,6 +266,53 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
+    @objc func longPress(_ gestureRecognizer: UIGestureRecognizer) {
+        print("Recognized a long press")
+        
+        if gestureRecognizer.state == .began {
+            let point = gestureRecognizer.location(in: self)
+            selectedLineIndex = indexOfLine(at: point)
+            
+            if selectedLineIndex != nil {
+                currentLines.removeAll()
+            }
+        } else if gestureRecognizer.state == .ended {
+            selectedLineIndex = nil
+        }
+        
+        setNeedsDisplay()
+    }
+    
+    @objc func moveLine(_ gestureRecognizer: UIPanGestureRecognizer) {
+        print("Recognized a pan")
+        
+        // If a line is selected...
+        if let index = selectedLineIndex {
+            // When the pan recognizer changes its position...
+            if gestureRecognizer.state == .changed {
+                // How far has the pan moved?
+                let translation = gestureRecognizer.translation(in: self)
+                
+                // Add the translation to the current beginning and end points of the line
+                // Make sure there are no copy and paste types!
+                finishedLines[index].begin.x += translation.x
+                finishedLines[index].begin.y += translation.y
+                finishedLines[index].end.x += translation.x
+                finishedLines[index].end.y += translation.y
+                
+                gestureRecognizer.setTranslation(CGPoint.zero, in: self)
+                
+                // Redraw the screen
+                setNeedsDisplay()
+            }
+        } else {
+            // If no line is selected, do not do anything
+            return
+        }
+    }
+    
+    // MARK: - Initializer
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         
@@ -271,7 +325,17 @@ class DrawView: UIView {
         tapRecognizer.delaysTouchesBegan = true
         tapRecognizer.require(toFail: doubleTapRecognizer)
         addGestureRecognizer(tapRecognizer)
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DrawView.longPress(_:)))
+        addGestureRecognizer(longPressRecognizer)
+        
+        moveRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DrawView.moveLine(_:)))
+        moveRecognizer.delegate = self
+        moveRecognizer.cancelsTouchesInView = false
+        addGestureRecognizer(moveRecognizer)
     }
+    
+    // MARK: - Helper Methods
     
     private func updateCurrentCircle() {
         let points = Array(circlePoints)
@@ -282,5 +346,11 @@ class DrawView: UIView {
         } else if points.count == 1 {
             currentCircle?.end = points[0].value
         }
+    }
+}
+
+extension DrawView: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
     }
 }
