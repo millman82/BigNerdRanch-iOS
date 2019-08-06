@@ -35,6 +35,14 @@ class PhotoStore {
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request) { (data, response, error) in
             
+            if let response = response as? HTTPURLResponse {
+                print("Respose code: \(response.statusCode)")
+                
+                for header in response.allHeaderFields {
+                    print("Header \(header.key): \(header.value)")
+                }
+            }
+            
             let result = self.processPhotosRequest(data: data, error: error)
             OperationQueue.main.addOperation {
                 completion(result)
@@ -49,6 +57,14 @@ class PhotoStore {
         let request = URLRequest(url: photoUrl)
         
         let task = session.dataTask(with: request) { (data, response, error) in
+            
+            if let response = response as? HTTPURLResponse {
+                print("Respose code: \(response.statusCode)")
+                
+                for header in response.allHeaderFields {
+                    print("Header \(header.key): \(header.value)")
+                }
+            }
             
             let result = self.processImageRequest(data: data, error: error)
             OperationQueue.main.addOperation {
