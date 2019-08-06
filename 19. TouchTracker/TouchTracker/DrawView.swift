@@ -8,18 +8,22 @@
 
 import UIKit
 
+enum ObjectType {
+    case circle
+    case line
+}
+
 class DrawView: UIView {
     
     var circlePoints = [NSValue:CGPoint]()
     var currentCircle: Circle?
     var finishedCircles = [Circle]()
-    var selectedCircleIndex: Int?
     var currentLines = [NSValue:Line]()
     var finishedLines = [Line]()
     var currentVelocity: CGFloat = 0
-    var selectedLineIndex: Int? {
+    var selectedObject: (index: Int, objectType: ObjectType)? {
         didSet {
-            if selectedLineIndex == nil {
+            if selectedObject == nil {
                 let menu = UIMenuController.shared
                 menu.setMenuVisible(false, animated: true)
             }
@@ -68,7 +72,26 @@ class DrawView: UIView {
         path.stroke()
     }
     
-    func indexOfLine(at point: CGPoint) -> Int? {
+    func indexOfClosestObject(at point: CGPoint) -> (index: Int, objectType: ObjectType)? {
+        let lineIndex = indexOfLine(at: point)
+        let circleIndex = indexOfCircle(at: point)
+        
+        if let lineIndex = lineIndex, let circleIndex = circleIndex {
+            if lineIndex.distance <= circleIndex.distance {
+                return (index: lineIndex.index, objectType: .line)
+            }
+            
+            return (index: circleIndex.index, objectType: .circle)
+        } else if let lineIndex = lineIndex {
+            return (index: lineIndex.index, objectType: .line)
+        } else if let circleIndex = circleIndex {
+            return (index: circleIndex.index, objectType: .circle)
+        }
+        
+        return nil
+    }
+    
+    func indexOfLine(at point: CGPoint) -> (index: Int, distance: CGFloat)? {
         // Find a line close to point
         for (index, line) in finishedLines.enumerated() {
             let begin = line.begin
@@ -80,8 +103,9 @@ class DrawView: UIView {
                 let y = begin.y + ((end.y - begin.y) * t)
                 
                 // If the tapped point is within 20 points, let's return this line
-                if hypot(x - point.x, y - point.y) < 20.0 {
-                    return index
+                let h = hypot(x - point.x, y - point.y)
+                if h < 20.0 {
+                    return (index: index, distance: h)
                 }
             }
         }
@@ -90,11 +114,40 @@ class DrawView: UIView {
         return nil
     }
     
-    @objc func deleteLine(_ sender: UIMenuController) {
+    func indexOfCircle(at point: CGPoint) -> (index: Int, distance: CGFloat)? {
+        // Find a circle close to point
+        for (index, circle) in finishedCircles.enumerated() {
+            let begin = circle.begin
+            let end = circle.end
+            let circleRect = circle.circleRect
+            
+            let circleCenter = CGPoint(x: (begin.x + end.x) / 2, y: (begin.y + end.y) / 2)
+            let radius = circleRect.width / 2
+            
+            for t in stride(from: CGFloat(0), to: 360, by: 5) {
+                let x = radius * sin(t) + circleCenter.x
+                let y = radius * cos(t) + circleCenter.y
+                
+                let h = hypot(x - point.x, y - point.y)
+                if h < 20.0 {
+                    return (index: index, distance: h)
+                }
+            }
+        }
+        
+        return nil
+    }
+    
+    @objc func deleteObject(_ sender: UIMenuController) {
         // Remove the selected line from the list of finishedLines
-        if let index = selectedLineIndex {
-            finishedLines.remove(at: index)
-            selectedLineIndex = nil
+        if let selectedObject = selectedObject {
+            if selectedObject.objectType == .line {
+                finishedLines.remove(at: selectedObject.index)
+            } else if selectedObject.objectType == .circle {
+                finishedCircles.remove(at: selectedObject.index)
+            }
+            
+            self.selectedObject = nil
             
             // Redraw everything
             setNeedsDisplay()
@@ -119,21 +172,20 @@ class DrawView: UIView {
             stroke(line)
         }
         
-        if let index = selectedLineIndex {
-            UIColor.green.setStroke()
-            let selectedLine = finishedLines[index]
-            stroke(selectedLine)
-        }
-        
         currentLineColor.setStroke()
         if let currentCircle = currentCircle {
             stroke(currentCircle)
         }
         
-        if let index = selectedCircleIndex {
+        if let selectedObject = selectedObject {
             UIColor.green.setStroke()
-            let selectedCircle = finishedCircles[index]
-            stroke(selectedCircle)
+            if selectedObject.objectType == .line {
+                let selectedLine = finishedLines[selectedObject.index]
+                stroke(selectedLine)
+            } else if selectedObject.objectType == .circle {
+                let selectedCircle = finishedCircles[selectedObject.index]
+                stroke(selectedCircle)
+            }
         }
     }
     
@@ -143,7 +195,7 @@ class DrawView: UIView {
         // Log statement to see the order of events
         print(#function)
         
-        selectedLineIndex = nil
+        selectedObject = nil
         
         if touches.count == 2 && currentCircle == nil {
             for touch in touches {
@@ -153,7 +205,7 @@ class DrawView: UIView {
                 circlePoints[key] = location
             }
             
-            currentCircle = Circle()
+            currentCircle = Circle(begin: CGPoint.zero, end: CGPoint.zero)
             updateCurrentCircle()
         } else {
             for touch in touches {
@@ -230,10 +282,9 @@ class DrawView: UIView {
     @objc func doubleTap(_ gestureRecognizer: UIGestureRecognizer) {
         print("Recognized a double tap")
         
-        selectedLineIndex = nil
+        selectedObject = nil
         currentLines.removeAll()
         finishedLines.removeAll()
-        selectedCircleIndex = nil
         circlePoints.removeAll()
         currentCircle = nil
         finishedCircles.removeAll()
@@ -245,18 +296,18 @@ class DrawView: UIView {
         print("Recognized a tap")
         
         let point = gestureRecognizer.location(in: self)
-        selectedLineIndex = indexOfLine(at: point)
+        selectedObject = indexOfClosestObject(at: point)
         
         // Grab the menu controller
         let menu = UIMenuController.shared
         
-        if selectedLineIndex != nil {
+        if selectedObject != nil {
             
             // Make DrawView the target of menu item action messages
             becomeFirstResponder()
             
             // Create a new "Delete" UIMenuItem
-            let deleteItem = UIMenuItem(title: "Delete", action: #selector(DrawView.deleteLine(_:)))
+            let deleteItem = UIMenuItem(title: "Delete", action: #selector(DrawView.deleteObject(_:)))
             
             menu.menuItems = [deleteItem]
             
@@ -277,13 +328,15 @@ class DrawView: UIView {
         
         if gestureRecognizer.state == .began {
             let point = gestureRecognizer.location(in: self)
-            selectedLineIndex = indexOfLine(at: point)
+            selectedObject = indexOfClosestObject(at: point)
             
-            if selectedLineIndex != nil {
+            if selectedObject != nil {
                 currentLines.removeAll()
+                currentCircle = nil
+                circlePoints.removeAll()
             }
         } else if gestureRecognizer.state == .ended {
-            selectedLineIndex = nil
+            selectedObject = nil
         }
         
         setNeedsDisplay()
@@ -302,8 +355,8 @@ class DrawView: UIView {
         
         guard longPressRecognizer.state == .changed else { return }
         
-        // If a line is selected...
-        if let index = selectedLineIndex {
+        // If an object is selected...
+        if let selectedObject = selectedObject {
             // When the pan recognizer changes its position...
             if gestureRecognizer.state == .changed {
                 // How far has the pan moved?
@@ -311,10 +364,17 @@ class DrawView: UIView {
                 
                 // Add the translation to the current beginning and end points of the line
                 // Make sure there are no copy and paste types!
-                finishedLines[index].begin.x += translation.x
-                finishedLines[index].begin.y += translation.y
-                finishedLines[index].end.x += translation.x
-                finishedLines[index].end.y += translation.y
+                if selectedObject.objectType == .line {
+                    finishedLines[selectedObject.index].begin.x += translation.x
+                    finishedLines[selectedObject.index].begin.y += translation.y
+                    finishedLines[selectedObject.index].end.x += translation.x
+                    finishedLines[selectedObject.index].end.y += translation.y
+                } else if selectedObject.objectType == .circle {
+                    finishedCircles[selectedObject.index].begin.x += translation.x
+                    finishedCircles[selectedObject.index].begin.y += translation.y
+                    finishedCircles[selectedObject.index].end.x += translation.x
+                    finishedCircles[selectedObject.index].end.y += translation.y
+                }
                 
                 gestureRecognizer.setTranslation(CGPoint.zero, in: self)
                 
