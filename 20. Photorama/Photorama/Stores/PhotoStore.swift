@@ -32,23 +32,13 @@ class PhotoStore {
     func fetchInterestingPhotos(completion: @escaping (PhotosResult) -> Void) {
         
         let url = FlickrApi.interestingPhotosUrl
-        let request = URLRequest(url: url)
-        let task = session.dataTask(with: request) { (data, response, error) in
-            
-            if let response = response as? HTTPURLResponse {
-                print("Respose code: \(response.statusCode)")
-                
-                for header in response.allHeaderFields {
-                    print("Header \(header.key): \(header.value)")
-                }
-            }
-            
-            let result = self.processPhotosRequest(data: data, error: error)
-            OperationQueue.main.addOperation {
-                completion(result)
-            }
-        }
-        task.resume()
+        fetchPhotoList(url, completion)
+    }
+    
+    func fetchRecentPhotos(completion: @escaping (PhotosResult) -> Void) {
+        
+        let url = FlickrApi.recentPhotosUrl
+        fetchPhotoList(url, completion)
     }
     
     func fetchImage(for photo: Photo, completion: @escaping (ImageResult) -> Void) {
@@ -67,6 +57,26 @@ class PhotoStore {
             }
             
             let result = self.processImageRequest(data: data, error: error)
+            OperationQueue.main.addOperation {
+                completion(result)
+            }
+        }
+        task.resume()
+    }
+    
+    private func fetchPhotoList(_ url: URL, _ completion: @escaping (PhotosResult) -> Void) {
+        let request = URLRequest(url: url)
+        let task = session.dataTask(with: request) { (data, response, error) in
+            
+            if let response = response as? HTTPURLResponse {
+                print("Respose code: \(response.statusCode)")
+                
+                for header in response.allHeaderFields {
+                    print("Header \(header.key): \(header.value)")
+                }
+            }
+            
+            let result = self.processPhotosRequest(data: data, error: error)
             OperationQueue.main.addOperation {
                 completion(result)
             }
