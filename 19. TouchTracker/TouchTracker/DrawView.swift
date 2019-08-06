@@ -342,7 +342,7 @@ class DrawView: UIView {
         setNeedsDisplay()
     }
     
-    @objc func moveLine(_ gestureRecognizer: UIPanGestureRecognizer) {
+    @objc func moveObject(_ gestureRecognizer: UIPanGestureRecognizer) {
         print("Recognized a pan")
         
         let velocity = gestureRecognizer.velocity(in: self)
@@ -405,7 +405,7 @@ class DrawView: UIView {
         longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(DrawView.longPress(_:)))
         addGestureRecognizer(longPressRecognizer)
         
-        moveRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DrawView.moveLine(_:)))
+        moveRecognizer = UIPanGestureRecognizer(target: self, action: #selector(DrawView.moveObject))
         moveRecognizer.delegate = self
         moveRecognizer.cancelsTouchesInView = false
         addGestureRecognizer(moveRecognizer)
