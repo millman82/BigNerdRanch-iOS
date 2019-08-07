@@ -36,7 +36,7 @@ struct FlickrApi {
         return flickrUrl(method: .recentPhotos, parameters: ["extras": "url_h,date_taken"])
     }
     
-    static func photos(fromJson data: Data) -> PhotosResult {
+    static func photos(fromJson data: Data) -> Result<[Photo], Error> {
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
             
@@ -49,7 +49,6 @@ struct FlickrApi {
                     return .failure(FlickrError.invalidJSONData)
             }
             
-            print(photosJsonObject)
             let photosData = try JSONSerialization.data(withJSONObject: photosJsonArray, options:[])
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(dateFormatter)
