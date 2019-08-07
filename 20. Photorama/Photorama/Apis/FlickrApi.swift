@@ -42,26 +42,34 @@ struct FlickrApi {
             
             guard
                 let jsonDictionary = jsonObject as? [AnyHashable:Any],
-                let photos = jsonDictionary["photos"] as? [String:Any],
-                let photosArray = photos["photo"] as? [[String:Any]] else {
-                    
+                let photosJsonObject = jsonDictionary["photos"] as? [String:Any],
+                let photosJsonArray = photosJsonObject["photo"] as? [[String:Any]] else {
+
                     // The JSON structure doesn't match our expectations
                     return .failure(FlickrError.invalidJSONData)
             }
             
-            var finalPhotos = [Photo]()
-            for photoJson in photosArray {
-                if let photo = photo(fromJson: photoJson) {
-                    finalPhotos.append(photo)
-                }
-            }
+            print(photosJsonObject)
+            let photosData = try JSONSerialization.data(withJSONObject: photosJsonArray, options:[])
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .formatted(dateFormatter)
+            let photoItems = try decoder.decode([PhotoItem].self, from: photosData)
             
-            if finalPhotos.isEmpty && !photosArray.isEmpty {
+            if photoItems.isEmpty {
                 // We weren't able to parse any of the photos
                 // Maybe the JSON format for photos has changed
                 return .failure(FlickrError.invalidJSONData)
             }
-            return .success(finalPhotos)
+            
+            // Only retrieving large image urls so if a large url is missing we need to filter them out
+            // Then we map it to the model used for presentation
+            let photos = photoItems.filter({ item -> Bool in
+                return item.remoteUrl != nil
+            }).map { item -> Photo in
+                return Photo(title: item.title, photoId: item.photoId, remoteUrl: item.remoteUrl!, dateTaken: item.dateTaken)
+            }
+            
+            return .success(photos)
         }  catch let error {
             return .failure(error)
         }
@@ -94,21 +102,5 @@ struct FlickrApi {
         components.queryItems = queryItems
         
         return components.url!
-    }
-    
-    private static func photo(fromJson json: [String : Any]) -> Photo? {
-        guard
-            let photoId = json["id"] as? String,
-            let title = json["title"] as? String,
-            let dateString = json["datetaken"] as? String,
-            let photoUrlString = json["url_h"] as? String,
-            let url = URL(string: photoUrlString),
-            let dateTaken = dateFormatter.date(from: dateString) else {
-                
-                // Don't have enough information to construct a Photo
-                return nil
-        }
-        
-        return Photo(title: title, photoId: photoId, remoteUrl: url, dateTaken: dateTaken)
     }
 }
