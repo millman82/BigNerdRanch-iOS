@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		276868AD22FBBE8F0032F464 /* PhotoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276868AC22FBBE8F0032F464 /* PhotoDataSource.swift */; };
+		276868B022FBC2530032F464 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276868AF22FBC2530032F464 /* PhotoCollectionViewCell.swift */; };
 		2786D0CB22F9422800EED713 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2786D0CA22F9422800EED713 /* AppDelegate.swift */; };
 		2786D0D022F9422800EED713 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2786D0CE22F9422800EED713 /* Main.storyboard */; };
 		2786D0D222F9422900EED713 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2786D0D122F9422900EED713 /* Assets.xcassets */; };
@@ -40,6 +41,7 @@
 
 /* Begin PBXFileReference section */
 		276868AC22FBBE8F0032F464 /* PhotoDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDataSource.swift; sourceTree = "<group>"; };
+		276868AF22FBC2530032F464 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
 		2786D0C722F9422800EED713 /* Photorama.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Photorama.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2786D0CA22F9422800EED713 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2786D0CF22F9422800EED713 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -92,6 +94,14 @@
 			path = DataSources;
 			sourceTree = "<group>";
 		};
+		276868AE22FBC2290032F464 /* CollectionViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				276868AF22FBC2530032F464 /* PhotoCollectionViewCell.swift */,
+			);
+			path = CollectionViewCells;
+			sourceTree = "<group>";
+		};
 		2786D0BE22F9422700EED713 = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +127,7 @@
 			children = (
 				2786D0CA22F9422800EED713 /* AppDelegate.swift */,
 				27DCA16222FA177000A4B7E6 /* Apis */,
+				276868AE22FBC2290032F464 /* CollectionViewCells */,
 				276868AB22FBBE700032F464 /* DataSources */,
 				27B0EDC122FA1ABA0080784A /* Models */,
 				27DCA16322FA177A00A4B7E6 /* Stores */,
@@ -312,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				27DCA15E22FA0D4200A4B7E6 /* PhotosViewController.swift in Sources */,
+				276868B022FBC2530032F464 /* PhotoCollectionViewCell.swift in Sources */,
 				276868AD22FBBE8F0032F464 /* PhotoDataSource.swift in Sources */,
 				2786D0CB22F9422800EED713 /* AppDelegate.swift in Sources */,
 				27DCA16522FA179000A4B7E6 /* PhotoStore.swift in Sources */,
