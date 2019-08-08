@@ -8,7 +8,7 @@
 
 import Foundation
 
-class PhotoItem: Decodable {
+class FlickrPhoto: Decodable {
     let title: String
     let remoteUrl: URL?
     let photoId: String

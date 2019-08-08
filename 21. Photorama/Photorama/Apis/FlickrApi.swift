@@ -52,7 +52,7 @@ struct FlickrApi {
             let photosData = try JSONSerialization.data(withJSONObject: photosJsonArray, options:[])
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .formatted(dateFormatter)
-            let photoItems = try decoder.decode([PhotoItem].self, from: photosData)
+            let photoItems = try decoder.decode([FlickrPhoto].self, from: photosData)
             
             if photoItems.isEmpty {
                 // We weren't able to parse any of the photos
