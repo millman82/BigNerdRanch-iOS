@@ -12,5 +12,8 @@ import CoreData
 
 @objc(Photo)
 public class Photo: NSManagedObject {
-
+    @objc public enum CategoryType: Int16 {
+        case interesting = 0
+        case recent = 1
+    }
 }

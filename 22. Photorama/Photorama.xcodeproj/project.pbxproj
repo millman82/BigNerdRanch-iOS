@@ -23,7 +23,7 @@
 		27DCA16522FA179000A4B7E6 /* PhotoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DCA16422FA179000A4B7E6 /* PhotoStore.swift */; };
 		27DD355D22FF1FA000069B1B /* Photorama.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 27DD355B22FF1FA000069B1B /* Photorama.xcdatamodeld */; };
 		27DD356022FF26D700069B1B /* Photo+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DD355E22FF26D700069B1B /* Photo+CoreDataClass.swift */; };
-		27DD356122FF26D700069B1B /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DD355F22FF26D700069B1B /* Photo+CoreDataProperties.swift */; };
+		27DD356522FF373400069B1B /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DD356322FF373400069B1B /* Photo+CoreDataProperties.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,7 +66,7 @@
 		27DCA16422FA179000A4B7E6 /* PhotoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStore.swift; sourceTree = "<group>"; };
 		27DD355C22FF1FA000069B1B /* Photorama.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Photorama.xcdatamodel; sourceTree = "<group>"; };
 		27DD355E22FF26D700069B1B /* Photo+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataClass.swift"; sourceTree = "<group>"; };
-		27DD355F22FF26D700069B1B /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		27DD356322FF373400069B1B /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				27DD355E22FF26D700069B1B /* Photo+CoreDataClass.swift */,
-				27DD355F22FF26D700069B1B /* Photo+CoreDataProperties.swift */,
+				27DD356322FF373400069B1B /* Photo+CoreDataProperties.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -335,12 +335,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				27DCA15E22FA0D4200A4B7E6 /* PhotosViewController.swift in Sources */,
+				27DD356522FF373400069B1B /* Photo+CoreDataProperties.swift in Sources */,
 				27DD356022FF26D700069B1B /* Photo+CoreDataClass.swift in Sources */,
 				276868B622FBCAAC0032F464 /* PhotoInfoViewController.swift in Sources */,
 				276868B022FBC2530032F464 /* PhotoCollectionViewCell.swift in Sources */,
 				276868AD22FBBE8F0032F464 /* PhotoDataSource.swift in Sources */,
 				2786D0CB22F9422800EED713 /* AppDelegate.swift in Sources */,
-				27DD356122FF26D700069B1B /* Photo+CoreDataProperties.swift in Sources */,
 				27DCA16522FA179000A4B7E6 /* PhotoStore.swift in Sources */,
 				276868B422FBC9B00032F464 /* ImageStore.swift in Sources */,
 				27DD355D22FF1FA000069B1B /* Photorama.xcdatamodeld in Sources */,

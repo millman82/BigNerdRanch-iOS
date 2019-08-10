@@ -37,7 +37,7 @@ struct FlickrApi {
         return flickrUrl(method: .recentPhotos, parameters: ["extras": "url_h,date_taken"])
     }
     
-    static func photos(fromJson data: Data, into context: NSManagedObjectContext) -> Result<[Photo], Error> {
+    static func photos(fromJson data: Data, photoCategory category: Photo.CategoryType, into context: NSManagedObjectContext) -> Result<[Photo], Error> {
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
             
@@ -66,7 +66,7 @@ struct FlickrApi {
             let photos = photoItems.filter({ item -> Bool in
                 return item.remoteUrl != nil
             }).map { item -> Photo in
-                return photo(from: item, into: context)
+                return photo(from: item, category: category, into: context)
             }
             
             return .success(photos)
@@ -104,10 +104,10 @@ struct FlickrApi {
         return components.url!
     }
     
-    private static func photo(from flickrPhoto: FlickrPhoto, into context: NSManagedObjectContext) -> Photo {
+    private static func photo(from flickrPhoto: FlickrPhoto, category: Photo.CategoryType, into context: NSManagedObjectContext) -> Photo {
         
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-        let predicate = NSPredicate(format: "\(#keyPath(Photo.photoId)) == \(flickrPhoto.photoId)")
+        let predicate = NSPredicate(format: "\(#keyPath(Photo.photoId)) == \(flickrPhoto.photoId) AND \(#keyPath(Photo.category)) == \(category.rawValue)")
         fetchRequest.predicate = predicate
         
         var fetchedPhotos: [Photo]?
@@ -125,6 +125,7 @@ struct FlickrApi {
             photo.photoId = flickrPhoto.photoId
             photo.remoteUrl = flickrPhoto.remoteUrl as NSURL?
             photo.dateTaken = flickrPhoto.dateTaken
+            photo.category = category
         }
         
         return photo

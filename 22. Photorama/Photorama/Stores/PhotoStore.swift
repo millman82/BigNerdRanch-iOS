@@ -35,13 +35,13 @@ class PhotoStore {
     func fetchInterestingPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
         
         let url = FlickrApi.interestingPhotosUrl
-        fetchPhotoList(url, completion)
+        fetchPhotoList(url, category: Photo.CategoryType.interesting, completion)
     }
     
     func fetchRecentPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
         
         let url = FlickrApi.recentPhotosUrl
-        fetchPhotoList(url, completion)
+        fetchPhotoList(url, category: Photo.CategoryType.recent, completion)
     }
     
     func fetchAllPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
@@ -100,7 +100,7 @@ class PhotoStore {
         task.resume()
     }
     
-    private func fetchPhotoList(_ url: URL, _ completion: @escaping (Result<[Photo], Error>) -> Void) {
+    private func fetchPhotoList(_ url: URL, category: Photo.CategoryType, _ completion: @escaping (Result<[Photo], Error>) -> Void) {
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request) { (data, response, error) in
             
@@ -112,7 +112,7 @@ class PhotoStore {
                 }
             }
             
-            var result = self.processPhotosRequest(data: data, error: error)
+            var result = self.processPhotosRequest(data: data, category: category, error: error)
             
             if case .success = result {
                 do {
@@ -129,12 +129,12 @@ class PhotoStore {
         task.resume()
     }
     
-    private func processPhotosRequest(data: Data?, error: Error?) -> Result<[Photo], Error> {
+    private func processPhotosRequest(data: Data?, category: Photo.CategoryType, error: Error?) -> Result<[Photo], Error> {
         guard let jsonData = data else {
             return .failure(error!)
         }
         
-        return FlickrApi.photos(fromJson: jsonData, into: persistentContainer.viewContext)
+        return FlickrApi.photos(fromJson: jsonData, photoCategory: category, into: persistentContainer.viewContext)
     }
     
     private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {
