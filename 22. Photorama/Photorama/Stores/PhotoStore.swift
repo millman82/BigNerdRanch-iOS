@@ -44,6 +44,22 @@ class PhotoStore {
         fetchPhotoList(url, completion)
     }
     
+    func fetchAllPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let sortByDateTaken = NSSortDescriptor(key: #keyPath(Photo.dateTaken), ascending: true)
+        fetchRequest.sortDescriptors = [sortByDateTaken]
+        
+        let viewContext = persistentContainer.viewContext
+        viewContext.perform {
+            do {
+                let allPhotos = try viewContext.fetch(fetchRequest)
+                completion(.success(allPhotos))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
     func fetchImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
         
         guard let photoKey = photo.photoId else {

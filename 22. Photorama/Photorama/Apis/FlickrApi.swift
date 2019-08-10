@@ -105,6 +105,19 @@ struct FlickrApi {
     }
     
     private static func photo(from flickrPhoto: FlickrPhoto, into context: NSManagedObjectContext) -> Photo {
+        
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "\(#keyPath(Photo.photoId)) == \(flickrPhoto.photoId)")
+        fetchRequest.predicate = predicate
+        
+        var fetchedPhotos: [Photo]?
+        context.performAndWait {
+            fetchedPhotos = try? fetchRequest.execute()
+        }
+        if let existingPhoto = fetchedPhotos?.first {
+            return existingPhoto
+        }
+        
         var photo: Photo!
         context.performAndWait {
             photo = Photo(context: context)
