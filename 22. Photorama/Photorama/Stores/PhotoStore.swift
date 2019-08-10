@@ -60,6 +60,23 @@ class PhotoStore {
         }
     }
     
+    func viewImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
+        fetchImage(for: photo) { (result) in
+            if case .success = result {
+                photo.viewCount += 1
+                
+                let context = self.persistentContainer.viewContext
+                do {
+                    try context.save()
+                } catch {
+                    print("Failed to save view count update.")
+                }
+            }
+            
+            completion(result)
+        }
+    }
+    
     func fetchImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
         
         guard let photoKey = photo.photoId else {

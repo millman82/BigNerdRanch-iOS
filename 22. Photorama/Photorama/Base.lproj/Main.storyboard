@@ -87,21 +87,36 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="x8E-Qf-vLO">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="ZET-hV-b8w">
                                 <rect key="frame" x="0.0" y="44" width="375" height="623"/>
-                            </imageView>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="x8E-Qf-vLO">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="587"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Views: 0" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iv3-U9-Ga0">
+                                        <rect key="frame" x="0.0" y="593" width="375" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="AYm-X0-Hcg"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="x8E-Qf-vLO" firstAttribute="trailing" secondItem="gYs-oH-t5y" secondAttribute="trailing" id="JML-Rc-yoi"/>
-                            <constraint firstItem="x8E-Qf-vLO" firstAttribute="top" secondItem="gYs-oH-t5y" secondAttribute="top" id="Mt1-VG-9d2"/>
-                            <constraint firstItem="x8E-Qf-vLO" firstAttribute="leading" secondItem="gYs-oH-t5y" secondAttribute="leading" id="eEX-gq-2XY"/>
-                            <constraint firstItem="gYs-oH-t5y" firstAttribute="bottom" secondItem="x8E-Qf-vLO" secondAttribute="bottom" id="nKh-PB-0Fy"/>
+                            <constraint firstItem="ZET-hV-b8w" firstAttribute="leading" secondItem="gYs-oH-t5y" secondAttribute="leading" id="880-z5-N6a"/>
+                            <constraint firstItem="ZET-hV-b8w" firstAttribute="top" secondItem="gYs-oH-t5y" secondAttribute="top" id="eNb-ur-78H"/>
+                            <constraint firstItem="ZET-hV-b8w" firstAttribute="bottom" secondItem="gYs-oH-t5y" secondAttribute="bottom" id="wZa-Io-Qic"/>
+                            <constraint firstItem="ZET-hV-b8w" firstAttribute="trailing" secondItem="gYs-oH-t5y" secondAttribute="trailing" id="yix-tK-Tly"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gYs-oH-t5y"/>
                     </view>
                     <connections>
                         <outlet property="imageView" destination="x8E-Qf-vLO" id="7FM-sD-Fsy"/>
+                        <outlet property="viewCount" destination="iv3-U9-Ga0" id="MI4-7O-rii"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6CP-gT-7Iz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
