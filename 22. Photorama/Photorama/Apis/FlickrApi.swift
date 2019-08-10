@@ -6,6 +6,7 @@
 //  Copyright © 2019 Tim Miller. All rights reserved.
 //
 
+import CoreData
 import Foundation
 
 enum FlickrError: Error {
@@ -36,7 +37,7 @@ struct FlickrApi {
         return flickrUrl(method: .recentPhotos, parameters: ["extras": "url_h,date_taken"])
     }
     
-    static func photos(fromJson data: Data) -> Result<[Photo], Error> {
+    static func photos(fromJson data: Data, into context: NSManagedObjectContext) -> Result<[Photo], Error> {
         do {
             let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
             
@@ -65,7 +66,7 @@ struct FlickrApi {
             let photos = photoItems.filter({ item -> Bool in
                 return item.remoteUrl != nil
             }).map { item -> Photo in
-                return Photo(title: item.title, photoId: item.photoId, remoteUrl: item.remoteUrl!, dateTaken: item.dateTaken)
+                return photo(from: item, into: context)
             }
             
             return .success(photos)
@@ -101,5 +102,18 @@ struct FlickrApi {
         components.queryItems = queryItems
         
         return components.url!
+    }
+    
+    private static func photo(from flickrPhoto: FlickrPhoto, into context: NSManagedObjectContext) -> Photo {
+        var photo: Photo!
+        context.performAndWait {
+            photo = Photo(context: context)
+            photo.title = flickrPhoto.title
+            photo.photoId = flickrPhoto.photoId
+            photo.remoteUrl = flickrPhoto.remoteUrl as NSURL?
+            photo.dateTaken = flickrPhoto.dateTaken
+        }
+        
+        return photo
     }
 }

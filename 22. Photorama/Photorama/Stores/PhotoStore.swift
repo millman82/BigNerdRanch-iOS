@@ -6,7 +6,8 @@
 //  Copyright © 2019 Tim Miller. All rights reserved.
 //
 
-import UIKit
+import CoreData
+import UIKit 
 
 enum PhotoError: Error {
     case imageCreationError
@@ -14,7 +15,17 @@ enum PhotoError: Error {
 
 class PhotoStore {
     
-    let imageStore = ImageStore()
+    let imageStore: ImageStore
+    
+    let persistentContainer: NSPersistentContainer = {
+        let container = NSPersistentContainer(name: "Photorama")
+        container.loadPersistentStores { (description, error) in
+            if let error = error {
+                print("Error setting up Core Data (\(error)).")
+            }
+        }
+        return container
+    }()
     
     private let session: URLSession = {
         let config = URLSessionConfiguration.default
@@ -35,7 +46,9 @@ class PhotoStore {
     
     func fetchImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
         
-        let photoKey = photo.photoId
+        guard let photoKey = photo.photoId else {
+            preconditionFailure("Photo expected to have a photoId.")
+        }
         if let image = imageStore.image(forKey: photoKey) {
             OperationQueue.main.addOperation {
                 completion(.success(image))
@@ -43,8 +56,10 @@ class PhotoStore {
             return
         }
         
-        let photoUrl = photo.remoteUrl
-        let request = URLRequest(url: photoUrl)
+        guard let photoUrl = photo.remoteUrl else {
+            preconditionFailure("Photo expected to have a remote URL.")
+        }
+        let request = URLRequest(url: photoUrl as URL)
         
         let task = session.dataTask(with: request) { (data, response, error) in
             
@@ -81,7 +96,16 @@ class PhotoStore {
                 }
             }
             
-            let result = self.processPhotosRequest(data: data, error: error)
+            var result = self.processPhotosRequest(data: data, error: error)
+            
+            if case .success = result {
+                do {
+                    try self.persistentContainer.viewContext.save()
+                } catch let error {
+                    result = .failure(error)
+                }
+            }
+            
             OperationQueue.main.addOperation {
                 completion(result)
             }
@@ -94,7 +118,7 @@ class PhotoStore {
             return .failure(error!)
         }
         
-        return FlickrApi.photos(fromJson: jsonData)
+        return FlickrApi.photos(fromJson: jsonData, into: persistentContainer.viewContext)
     }
     
     private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {
@@ -111,5 +135,9 @@ class PhotoStore {
         }
         
         return .success(image)
+    }
+    
+    init(imageStore: ImageStore) {
+        self.imageStore = imageStore
     }
 }
