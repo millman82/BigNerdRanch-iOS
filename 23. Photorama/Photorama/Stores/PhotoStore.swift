@@ -117,6 +117,22 @@ class PhotoStore {
         task.resume()
     }
     
+    func fetchAllTags(completion: @escaping (Result<[Tag], Error>) -> Void) {
+        let fetchRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
+        let sortByName = NSSortDescriptor(key: #keyPath(Tag.name), ascending: true)
+        fetchRequest.sortDescriptors = [sortByName]
+        
+        let viewContext = persistentContainer.viewContext
+        viewContext.perform {
+            do {
+                let allTags = try fetchRequest.execute()
+                completion(.success(allTags))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
     private func fetchPhotoList(_ url: URL, category: Photo.CategoryType, _ completion: @escaping (Result<[Photo], Error>) -> Void) {
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request) { (data, response, error) in
