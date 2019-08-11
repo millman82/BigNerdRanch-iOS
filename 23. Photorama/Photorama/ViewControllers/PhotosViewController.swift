@@ -23,32 +23,22 @@ class PhotosViewController: UIViewController {
     var collectionType: CollectionTypes = .interestingPhotos
     let sectionInsets = UIEdgeInsets(top: 2.0, left: 2.0, bottom: 2.0, right: 2.0)
     
+    var refreshControl: UIRefreshControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         collectionView.dataSource = photoDataSource
         collectionView.delegate = self
         
-        updateDataSource()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        self.collectionView!.alwaysBounceVertical = true
+        refreshControl = UIRefreshControl()
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        collectionView.addSubview(refreshControl)
         
-        switch collectionType {
-        case .interestingPhotos:
-            store.fetchInterestingPhotos { photosResult in
-                
-                self.updateDataSource()
-            }
-        case .recentPhotos:
-            store.fetchRecentPhotos { photosResult in
-                
-                self.updateDataSource()
-            }
-        case .favoritePhotos:
-            self.updateDataSource()
-        }
+        updateDataSource()
+        
+        refreshData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -64,6 +54,67 @@ class PhotosViewController: UIViewController {
         default:
             preconditionFailure("Unexpected segue identifier.")
         }
+    }
+    
+    @objc private func refreshData() {
+        switch collectionType {
+        case .interestingPhotos:
+            store.fetchInterestingPhotos { photosResult in
+                
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
+                
+                self.updateDataSource()
+            }
+        case .recentPhotos:
+            store.fetchRecentPhotos { photosResult in
+                
+                if self.refreshControl.isRefreshing {
+                    self.refreshControl.endRefreshing()
+                }
+                
+                self.updateDataSource()
+            }
+        case .favoritePhotos:
+            if refreshControl.isRefreshing {
+                refreshControl.endRefreshing()
+            }
+            
+            self.updateDataSource()
+        }
+    }
+    
+    private func updateDataSource() {
+        switch collectionType {
+        case .interestingPhotos,.recentPhotos:
+            var category: Photo.CategoryType = .interesting
+            if collectionType == .recentPhotos {
+                category = .recent
+            }
+            store.fetchAllPhotos(for: category) { (photosResult) in
+                
+                switch photosResult {
+                case let .success(photos):
+                    self.photoDataSource.photos = photos
+                case .failure:
+                    self.photoDataSource.photos.removeAll()
+                }
+                self.collectionView.reloadSections(IndexSet(integer: 0))
+            }
+        case .favoritePhotos:
+            store.fetchFavoritePhotos { (photosResult) in
+                switch photosResult {
+                case let .success(photos):
+                    self.photoDataSource.photos = photos
+                case .failure:
+                    self.photoDataSource.photos.removeAll()
+                }
+                self.collectionView.reloadSections(IndexSet(integer: 0))
+            }
+        }
+        
+        
     }
 }
 
@@ -102,35 +153,5 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return sectionInsets
-    }
-    
-    private func updateDataSource() {
-        switch collectionType {
-        case .interestingPhotos,.recentPhotos:
-            var category: Photo.CategoryType = .interesting
-            if collectionType == .recentPhotos {
-                category = .recent
-            }
-            store.fetchAllPhotos(for: category) { (photosResult) in
-                
-                switch photosResult {
-                case let .success(photos):
-                    self.photoDataSource.photos = photos
-                case .failure:
-                    self.photoDataSource.photos.removeAll()
-                }
-                self.collectionView.reloadSections(IndexSet(integer: 0))
-            }
-        case .favoritePhotos:
-            store.fetchFavoritePhotos { (photosResult) in
-                switch photosResult {
-                case let .success(photos):
-                    self.photoDataSource.photos = photos
-                case .failure:
-                    self.photoDataSource.photos.removeAll()
-                }
-                self.collectionView.reloadSections(IndexSet(integer: 0))
-            }
-        }
     }
 }

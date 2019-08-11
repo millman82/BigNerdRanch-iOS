@@ -9,12 +9,12 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--AllPhotos-->
+        <!--Interesting-->
         <scene sceneID="kqH-fe-NMn">
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="95w-PV-Oln" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <navigationController id="74d-0v-VF0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="AllPhotos" image="photo.fill.on.rectangle.fill" catalog="system" id="ORS-Pl-feY"/>
+                    <tabBarItem key="tabBarItem" title="Interesting" image="photo.fill.on.rectangle.fill" catalog="system" id="ORS-Pl-feY"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="U8h-Ot-P7g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
