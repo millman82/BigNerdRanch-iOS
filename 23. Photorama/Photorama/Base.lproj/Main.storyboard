@@ -95,6 +95,12 @@
                                             <segue destination="vhN-sG-wJe" kind="presentation" identifier="showTags" id="jaO-Fb-ixg"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="n4x-Ns-liv"/>
+                                    <barButtonItem title="Item" image="Star" id="ul0-5e-2cb">
+                                        <connections>
+                                            <action selector="favoriteButtonTapped:" destination="WTK-oW-ap4" id="OtH-eC-s6G"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </items>
                             </toolbar>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZET-hV-b8w">
@@ -128,6 +134,7 @@
                         <viewLayoutGuide key="safeArea" id="gYs-oH-t5y"/>
                     </view>
                     <connections>
+                        <outlet property="favoriteButton" destination="ul0-5e-2cb" id="6bR-T2-JVQ"/>
                         <outlet property="imageView" destination="x8E-Qf-vLO" id="7FM-sD-Fsy"/>
                         <outlet property="viewCount" destination="iv3-U9-Ga0" id="MI4-7O-rii"/>
                     </connections>
@@ -220,4 +227,7 @@
             <point key="canvasLocation" x="138.40000000000001" y="137.18140929535232"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Star" width="33" height="33"/>
+    </resources>
 </document>

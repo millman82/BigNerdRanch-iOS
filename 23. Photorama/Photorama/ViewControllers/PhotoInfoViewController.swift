@@ -12,6 +12,7 @@ class PhotoInfoViewController: UIViewController {
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var viewCount: UILabel!
+    @IBOutlet var favoriteButton: UIBarButtonItem!
     
     var photo: Photo! {
         didSet {
@@ -32,6 +33,8 @@ class PhotoInfoViewController: UIViewController {
                 print("Error fetching image for photo: \(error)")
             }
         }
+        
+        setFavoriteImage()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -45,5 +48,17 @@ class PhotoInfoViewController: UIViewController {
         default:
             preconditionFailure("Unexpected segue identifier.")
         }
+    }
+    
+    @IBAction func favoriteButtonTapped(_ sender: UIBarButtonItem) {
+        photo.isFavorite.toggle()
+        
+        setFavoriteImage()
+        
+        //view.setNeedsDisplay()
+    }
+    
+    private func setFavoriteImage() {
+        favoriteButton.image = photo.isFavorite ? UIImage(named: "Star-Filled") : UIImage(named: "Star")
     }
 }

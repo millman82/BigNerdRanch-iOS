@@ -23,6 +23,7 @@ extension Photo {
     @NSManaged public var remoteUrl: NSURL?
     @NSManaged public var title: String?
     @NSManaged public var viewCount: Int64
+    @NSManaged public var isFavorite: Bool
     @NSManaged public var tags: NSSet?
 
 }
