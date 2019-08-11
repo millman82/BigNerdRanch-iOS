@@ -145,29 +145,43 @@ class PhotoStore {
                 }
             }
             
-            var result = self.processPhotosRequest(data: data, category: category, error: error)
-            
-            if case .success = result {
-                do {
-                    try self.persistentContainer.viewContext.save()
-                } catch let error {
-                    result = .failure(error)
+            self.processPhotosRequest(data: data, category: category, error: error) { (result) in
+                
+                OperationQueue.main.addOperation {
+                    completion(result)
                 }
-            }
-            
-            OperationQueue.main.addOperation {
-                completion(result)
             }
         }
         task.resume()
     }
     
-    private func processPhotosRequest(data: Data?, category: Photo.CategoryType, error: Error?) -> Result<[Photo], Error> {
+    private func processPhotosRequest(data: Data?, category: Photo.CategoryType, error: Error?, completion: @escaping (Result<[Photo], Error>) -> Void) {
         guard let jsonData = data else {
-            return .failure(error!)
+            completion(.failure(error!))
+            return
         }
         
-        return FlickrApi.photos(fromJson: jsonData, photoCategory: category, into: persistentContainer.viewContext)
+        persistentContainer.performBackgroundTask { (context) in
+            let result = FlickrApi.photos(fromJson: jsonData, photoCategory: category, into: context)
+            
+            do {
+                try context.save()
+            } catch {
+                print("Error saving to Core Data: \(error).")
+                completion(.failure(error))
+                return
+            }
+            
+            switch result {
+            case let .success(photos):
+                let photoIds = photos.map { return $0.objectID }
+                let viewContext = self.persistentContainer.viewContext
+                let viewContextPhotos = photoIds.map { return viewContext.object(with: $0) } as! [Photo]
+                completion(.success(viewContextPhotos))
+            case .failure:
+                completion(result)
+            }
+        }
     }
     
     private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {

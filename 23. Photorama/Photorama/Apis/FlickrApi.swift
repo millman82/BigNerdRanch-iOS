@@ -63,11 +63,8 @@ struct FlickrApi {
             
             // Only retrieving large image urls so if a large url is missing we need to filter them out
             // Then we map it to the model used for presentation
-            let photos = photoItems.filter({ item -> Bool in
-                return item.remoteUrl != nil
-            }).map { item -> Photo in
-                return photo(from: item, category: category, into: context)
-            }
+            let photos = photoItems.filter { return $0.remoteUrl != nil }
+                .map { return photo(from: $0, category: category, into: context) }
             
             return .success(photos)
         }  catch let error {
