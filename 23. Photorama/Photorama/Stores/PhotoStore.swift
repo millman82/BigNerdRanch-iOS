@@ -44,9 +44,11 @@ class PhotoStore {
         fetchPhotoList(url, category: Photo.CategoryType.recent, completion)
     }
     
-    func fetchAllPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+    func fetchAllPhotos(for category: Photo.CategoryType, completion: @escaping (Result<[Photo], Error>) -> Void) {
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "\(#keyPath(Photo.category)) == \(category.rawValue)")
         let sortByDateTaken = NSSortDescriptor(key: #keyPath(Photo.dateTaken), ascending: true)
+        fetchRequest.predicate = predicate
         fetchRequest.sortDescriptors = [sortByDateTaken]
         
         let viewContext = persistentContainer.viewContext
@@ -54,6 +56,24 @@ class PhotoStore {
             do {
                 let allPhotos = try viewContext.fetch(fetchRequest)
                 completion(.success(allPhotos))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+    }
+    
+    func fetchFavoritePhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
+        let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+        let predicate = NSPredicate(format: "\(#keyPath(Photo.isFavorite)) == YES")
+        let sortByDateTaken = NSSortDescriptor(key: #keyPath(Photo.dateTaken), ascending: true)
+        fetchRequest.predicate = predicate
+        fetchRequest.sortDescriptors = [sortByDateTaken]
+        
+        let viewContext = persistentContainer.viewContext
+        viewContext.perform {
+            do {
+                let favoritePhotos = try viewContext.fetch(fetchRequest)
+                completion(.success(favoritePhotos))
             } catch {
                 completion(.failure(error))
             }

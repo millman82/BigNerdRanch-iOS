@@ -20,9 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let imageStore = ImageStore()
         let photoStore = PhotoStore(imageStore: imageStore)
         
-        let rootViewController = window!.rootViewController as! UINavigationController
-        let photosViewController = rootViewController.topViewController as! PhotosViewController
-        photosViewController.store = photoStore
+        let rootViewController = window!.rootViewController as! PhotosTabBarController
+        rootViewController.store = photoStore
         
         return true
     }

@@ -10,10 +10,17 @@ import UIKit
 
 class PhotosViewController: UIViewController {
     
+    enum CollectionTypes {
+        case interestingPhotos
+        case recentPhotos
+        case favoritePhotos
+    }
+    
     @IBOutlet var collectionView: UICollectionView!
     
     var store: PhotoStore!
     let photoDataSource = PhotoDataSource()
+    var collectionType: CollectionTypes = .interestingPhotos
     let sectionInsets = UIEdgeInsets(top: 2.0, left: 2.0, bottom: 2.0, right: 2.0)
     
     override func viewDidLoad() {
@@ -23,9 +30,23 @@ class PhotosViewController: UIViewController {
         collectionView.delegate = self
         
         updateDataSource()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        store.fetchInterestingPhotos { photosResult in
-            
+        switch collectionType {
+        case .interestingPhotos:
+            store.fetchInterestingPhotos { photosResult in
+                
+                self.updateDataSource()
+            }
+        case .recentPhotos:
+            store.fetchRecentPhotos { photosResult in
+                
+                self.updateDataSource()
+            }
+        case .favoritePhotos:
             self.updateDataSource()
         }
     }
@@ -84,15 +105,32 @@ extension PhotosViewController: UICollectionViewDelegateFlowLayout {
     }
     
     private func updateDataSource() {
-        store.fetchAllPhotos { (photosResult) in
-            
-            switch photosResult {
-            case let .success(photos):
-                self.photoDataSource.photos = photos
-            case .failure:
-                self.photoDataSource.photos.removeAll()
+        switch collectionType {
+        case .interestingPhotos,.recentPhotos:
+            var category: Photo.CategoryType = .interesting
+            if collectionType == .recentPhotos {
+                category = .recent
             }
-            self.collectionView.reloadSections(IndexSet(integer: 0))
+            store.fetchAllPhotos(for: category) { (photosResult) in
+                
+                switch photosResult {
+                case let .success(photos):
+                    self.photoDataSource.photos = photos
+                case .failure:
+                    self.photoDataSource.photos.removeAll()
+                }
+                self.collectionView.reloadSections(IndexSet(integer: 0))
+            }
+        case .favoritePhotos:
+            store.fetchFavoritePhotos { (photosResult) in
+                switch photosResult {
+                case let .success(photos):
+                    self.photoDataSource.photos = photos
+                case .failure:
+                    self.photoDataSource.photos.removeAll()
+                }
+                self.collectionView.reloadSections(IndexSet(integer: 0))
+            }
         }
     }
 }

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		27321AC122FFA2A1005BAEDF /* Photo+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27321AC022FFA2A1005BAEDF /* Photo+CoreDataProperties.swift */; };
+		27321AC322FFBFA1005BAEDF /* PhotosTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27321AC222FFBFA1005BAEDF /* PhotosTabBarController.swift */; };
 		2766BF3E22FF902000C74E52 /* TagsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766BF3D22FF902000C74E52 /* TagsViewController.swift */; };
 		2766BF4022FF90AE00C74E52 /* TagDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2766BF3F22FF90AE00C74E52 /* TagDataSource.swift */; };
 		276868AD22FBBE8F0032F464 /* PhotoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276868AC22FBBE8F0032F464 /* PhotoDataSource.swift */; };
@@ -47,6 +48,7 @@
 
 /* Begin PBXFileReference section */
 		27321AC022FFA2A1005BAEDF /* Photo+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Photo+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		27321AC222FFBFA1005BAEDF /* PhotosTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTabBarController.swift; sourceTree = "<group>"; };
 		2766BF3D22FF902000C74E52 /* TagsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagsViewController.swift; sourceTree = "<group>"; };
 		2766BF3F22FF90AE00C74E52 /* TagDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagDataSource.swift; sourceTree = "<group>"; };
 		276868AC22FBBE8F0032F464 /* PhotoDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDataSource.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				276868B522FBCAAC0032F464 /* PhotoInfoViewController.swift */,
 				27DCA15D22FA0D4200A4B7E6 /* PhotosViewController.swift */,
 				2766BF3D22FF902000C74E52 /* TagsViewController.swift */,
+				27321AC222FFBFA1005BAEDF /* PhotosTabBarController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -351,6 +354,7 @@
 				27DCA16522FA179000A4B7E6 /* PhotoStore.swift in Sources */,
 				276868B422FBC9B00032F464 /* ImageStore.swift in Sources */,
 				27DD355D22FF1FA000069B1B /* Photorama.xcdatamodeld in Sources */,
+				27321AC322FFBFA1005BAEDF /* PhotosTabBarController.swift in Sources */,
 				2766BF4022FF90AE00C74E52 /* TagDataSource.swift in Sources */,
 				27DCA16122FA135D00A4B7E6 /* FlickrApi.swift in Sources */,
 				27B0EDC522FA5C220080784A /* FlickrPhoto.swift in Sources */,
