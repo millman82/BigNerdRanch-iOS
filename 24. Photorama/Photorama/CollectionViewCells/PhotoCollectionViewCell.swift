@@ -13,6 +13,8 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var spinner: UIActivityIndicatorView!
     
+    var photoDescription: String?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -23,6 +25,35 @@ class PhotoCollectionViewCell: UICollectionViewCell {
         super.prepareForReuse()
         
         update(with: nil)
+    }
+    
+    override var isAccessibilityElement: Bool {
+        get {
+            return true
+        }
+        set {
+            super.isAccessibilityElement = newValue
+        }
+    }
+    
+    override var accessibilityLabel: String? {
+        get {
+            return photoDescription
+        }
+        set {
+            // Ignore attempts to set
+        }
+    }
+    
+    override var accessibilityTraits: UIAccessibilityTraits {
+        get {
+            var traits = super.accessibilityTraits
+            traits.insert(UIAccessibilityTraits.image)
+            return traits
+        }
+        set {
+            // Ignore attempts to set
+        }
     }
     
     func update(with image: UIImage?) {

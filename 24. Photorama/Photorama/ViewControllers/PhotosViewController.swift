@@ -50,6 +50,7 @@ class PhotosViewController: UIViewController {
                 let destinationVC = segue.destination as! PhotoInfoViewController
                 destinationVC.photo = photo
                 destinationVC.store = store
+                //destinationVC.hidesBottomBarWhenPushed = true
             }
         default:
             preconditionFailure("Unexpected segue identifier.")
